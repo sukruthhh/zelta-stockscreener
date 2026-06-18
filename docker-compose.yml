@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: fintech_postgres
+    environment:
+      POSTGRES_USER: dev_admin
+      POSTGRES_PASSWORD: market_pass_123
+      POSTGRES_DB: screener_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: fintech_redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  pgdata:
