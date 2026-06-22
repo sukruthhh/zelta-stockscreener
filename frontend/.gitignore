@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Block VS Code configuration folder
+.vscode/
+
+# Block github copilot files
+.vscode/
+
+# Ignore GitHub Copilot instructions and configurations
+.github/copilot-instructions.md
+.github/copilot/
+
+# Ignore AI Memory Bank context files
+memory-bank/
