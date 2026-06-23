@@ -1,10 +1,14 @@
 from contextlib import asynccontextmanager
 from typing import List
-
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import yfinance as yf
+from agents import run_agent_analysis
+from functools import partial
+import asyncio
+import psycopg2
+import os
 
 load_dotenv()
 
@@ -41,7 +45,6 @@ class WatchlistRequest(BaseModel):
         examples=[1.0],
         description="Minimum annualized volatility required for a ticker to be included in alerts.",
     )
-
 
 @app.get(
     "/api/v1/test-ticker/{symbol}",
@@ -196,3 +199,73 @@ async def verify_database(limit: int = 10, ticker: str | None = None):
     response = get_database_verification_snapshot(limit=limit, ticker=ticker)
     market_cache.set_market_feed(cache_key, response, ttl_seconds=60)
     return {**response, "source": "live_api"}
+
+
+@app.get("/api/v1/anomalies")
+async def get_volume_anomalies(tickers: str = "AAPL,MSFT,GOOGL", threshold: float = 1.5):
+    """
+    Detect volume spikes that exceed the Average Daily Volume (ADV) multiplier threshold.
+    
+    Query Parameters:
+    - tickers: Comma-separated list of stock symbols (default: "AAPL,MSFT,GOOGL")
+    - threshold: ADV multiplier threshold (default: 1.5)
+    
+    Returns: List of detected volume anomalies with historical context.
+    """
+    ticker_list = [t.strip().upper() for t in tickers.split(",") if t.strip()]
+    
+    if not ticker_list:
+        return {
+            "status": "error",
+            "message": "No valid tickers provided",
+            "detected_count": 0,
+            "anomalies": {}
+        }
+    
+    anomalies = scanner_service.detect_volume_anomalies(ticker_list, threshold)
+    
+    return {
+        "status": "anomaly_detection_complete",
+        "threshold_multiplier": threshold,
+        "detected_count": len(anomalies),
+        "anomalies": anomalies,
+    }
+
+
+@app.post("/api/v1/analyse/{ticker}")
+async def analyse_ticker(ticker: str):
+    price_data = scanner_service.fetch_yfinance_data(ticker.upper(), period="3mo")
+    if len(price_data) < 20:
+        return {"error": f"Insufficient data for {ticker}"}
+
+    metrics = scanner_service.calculate_volatility_and_volume(price_data)
+
+    market_data = {
+        "current_price": metrics.get("current_close"),
+        "volume_spike_ratio": metrics.get("volume_spike_ratio"),
+        "annualized_volatility": metrics.get("annualized_volatility"),
+        "atr_14": metrics.get("annualized_volatility", 1.0),
+    }
+
+    db = psycopg2.connect(os.getenv("POSTGRES_URL"))
+    cursor = db.cursor()
+    cursor.execute("""
+        SELECT content_chunk FROM news_articles
+        WHERE ticker = %s
+        ORDER BY created_at DESC
+        LIMIT 10
+    """, (ticker.upper(),))
+    rows = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    news_chunks = [row[0] for row in rows]
+
+    # Run synchronous crew in a thread so it doesn't block the async event loop
+    loop = asyncio.get_event_loop()
+    result = await loop.run_in_executor(
+        None,
+        partial(run_agent_analysis, ticker.upper(), market_data, news_chunks)
+    )
+
+    return result
