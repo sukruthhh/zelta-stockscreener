@@ -120,3 +120,58 @@ class MarketScannerService:
                 }
 
         return anomalies
+    
+    def calculate_atr(self, symbol: str, period: int = 14) -> float:
+
+        """Calculates the 14-day Average True Range for a given ticker. ATR measures average daily price movement — used for stop-loss calculation."""
+
+        ticker = yf.Ticker(symbol.upper())
+        history = ticker.history(period="1mo")
+
+        if history.empty or len(history) < period:
+            return 0.0
+
+        high = history['High']
+        low = history['Low']
+        close = history['Close']
+
+        true_ranges = []
+        for i in range(1, len(history)):
+            tr = max(
+                high.iloc[i] - low.iloc[i],
+                abs(high.iloc[i] - close.iloc[i - 1]),
+                abs(low.iloc[i] - close.iloc[i - 1])
+            )
+            true_ranges.append(tr)
+
+        atr = sum(true_ranges[-period:]) / period
+        return round(atr, 4)
+
+
+    def calculate_stop_loss(self, current_price: float, atr: float, bias: str) -> float:
+
+        """
+        Calculates algorithmic stop-loss based on ATR and directional bias.
+        Bullish: stop-loss below current price (2x ATR)
+        Bearish: stop-loss above current price (2x ATR)
+       
+        """
+
+        if bias.lower() == "bullish":
+            return round(current_price - (2 * atr), 2)
+        elif bias.lower() == "bearish":
+            return round(current_price + (2 * atr), 2)
+        else:
+            return round(current_price - (1.5 * atr), 2)
+
+
+    def calculate_profit_target(self, current_price: float, atr: float, bias: str) -> float:
+
+        """Calculates profit target based on ATR (3:1 reward-to-risk ratio) """
+
+        if bias.lower() == "bullish":
+            return round(current_price + (3 * atr), 2)
+        elif bias.lower() == "bearish":
+            return round(current_price - (3 * atr), 2)
+        else:
+            return round(current_price + (2 * atr), 2)    

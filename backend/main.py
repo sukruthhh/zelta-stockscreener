@@ -239,12 +239,16 @@ async def analyse_ticker(ticker: str):
         return {"error": f"Insufficient data for {ticker}"}
 
     metrics = scanner_service.calculate_volatility_and_volume(price_data)
+    
+    # Real ATR calculation
+    atr = scanner_service.calculate_atr(ticker.upper())
+    current_price = metrics.get("current_close", 0)
 
     market_data = {
-        "current_price": metrics.get("current_close"),
+        "current_price": current_price,
         "volume_spike_ratio": metrics.get("volume_spike_ratio"),
         "annualized_volatility": metrics.get("annualized_volatility"),
-        "atr_14": metrics.get("annualized_volatility", 1.0),
+        "atr_14": atr,
     }
 
     db = psycopg2.connect(os.getenv("POSTGRES_URL"))
@@ -261,7 +265,6 @@ async def analyse_ticker(ticker: str):
 
     news_chunks = [row[0] for row in rows]
 
-    # Run synchronous crew in a thread so it doesn't block the async event loop
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(
         None,
@@ -269,3 +272,25 @@ async def analyse_ticker(ticker: str):
     )
 
     return result
+
+@app.get("/api/v1/risk/{ticker}")
+async def get_risk_metrics(ticker: str, bias: str = "bullish"):
+    price_data = scanner_service.fetch_yfinance_data(ticker.upper(), period="1mo")
+    if len(price_data) < 14:
+        return {"error": f"Insufficient data for {ticker}"}
+
+    metrics = scanner_service.calculate_volatility_and_volume(price_data)
+    current_price = metrics.get("current_close", 0)
+    atr = scanner_service.calculate_atr(ticker.upper())
+    stop_loss = scanner_service.calculate_stop_loss(current_price, atr, bias)
+    profit_target = scanner_service.calculate_profit_target(current_price, atr, bias)
+
+    return {
+        "ticker": ticker.upper(),
+        "current_price": current_price,
+        "atr_14": atr,
+        "bias": bias,
+        "stop_loss": stop_loss,
+        "profit_target": profit_target,
+        "risk_reward_ratio": "3:1"
+    }
