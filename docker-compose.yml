@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: dev_admin
       POSTGRES_PASSWORD: cookGuddi
-      POSTGRES_DB: screener_db
+      POSTGRES_DB: zelta_stocks
     ports:
       - "5432:5432"
     volumes:
