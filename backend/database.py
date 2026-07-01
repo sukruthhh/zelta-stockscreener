@@ -63,6 +63,24 @@ def init_db():
         ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS predictions (
+            id SERIAL PRIMARY KEY,
+            ticker TEXT NOT NULL,
+            current_price NUMERIC(10,4),
+            volume_spike_ratio NUMERIC(6,4),
+            atr_14 NUMERIC(10,4),
+            final_bias TEXT,
+            confidence_score NUMERIC(4,3),
+            calculated_stop_loss NUMERIC(10,4),
+            risk_rationale TEXT,
+            raw_agent_output TEXT,
+            backtest_status TEXT DEFAULT 'pending',
+            actual_outcome TEXT,
+            created_at TIMESTAMP DEFAULT NOW()
+        );
+    """)
+
     db.commit()
     cursor.close()
     db.close()
@@ -212,3 +230,22 @@ def get_database_verification_snapshot(limit: int = 10, ticker: str | None = Non
     finally:
         cursor.close()
         db.close()
+
+def save_prediction(ticker: str, market_data: dict, agent_result: dict):
+    db = psycopg2.connect(os.getenv("POSTGRES_URL"))
+    cursor = db.cursor()
+    cursor.execute("""
+        INSERT INTO predictions 
+        (ticker, current_price, volume_spike_ratio, atr_14, raw_agent_output) 
+        VALUES (%s, %s, %s, %s, %s)
+        RETURNING id
+    """, (
+        ticker,
+        float(market_data.get("current_price") or 0),
+        float(market_data.get("volume_spike_ratio") or 0),
+        float(market_data.get("atr_14") or 0),
+        agent_result.get("ai_analysis")
+    ))
+    db.commit()
+    cursor.close()
+    db.close()

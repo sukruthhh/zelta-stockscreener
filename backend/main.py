@@ -3,9 +3,10 @@ from typing import List
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-import yfinance as yf
 from agents import run_agent_analysis
 from functools import partial
+from database import init_db, save_scan_results, save_prediction
+import yfinance as yf
 import asyncio
 import psycopg2
 import os
@@ -13,7 +14,7 @@ import os
 load_dotenv()
 
 from cache_service import market_cache
-from database import get_database_verification_snapshot, init_db, save_scan_results
+from database import get_database_verification_snapshot, init_db, save_prediction, save_scan_results
 from news_harvester import harvest_and_pipeline_news
 from scanner import MarketScannerService
 
@@ -231,7 +232,6 @@ async def get_volume_anomalies(tickers: str = "AAPL,MSFT,GOOGL", threshold: floa
         "anomalies": anomalies,
     }
 
-
 @app.post("/api/v1/analyse/{ticker}")
 async def analyse_ticker(ticker: str):
     price_data = scanner_service.fetch_yfinance_data(ticker.upper(), period="3mo")
@@ -239,8 +239,6 @@ async def analyse_ticker(ticker: str):
         return {"error": f"Insufficient data for {ticker}"}
 
     metrics = scanner_service.calculate_volatility_and_volume(price_data)
-    
-    # Real ATR calculation
     atr = scanner_service.calculate_atr(ticker.upper())
     current_price = metrics.get("current_close", 0)
 
@@ -271,6 +269,16 @@ async def analyse_ticker(ticker: str):
         partial(run_agent_analysis, ticker.upper(), market_data, news_chunks)
     )
 
+    # Try to detect bias from the agent output, default to bullish
+    raw_output = result.get("ai_analysis", "")
+    bias = "bearish" if "bearish" in raw_output.lower() else "bullish"
+    real_stop_loss = scanner_service.calculate_stop_loss(current_price, atr, bias)
+
+    market_data["calculated_stop_loss"] = real_stop_loss
+
+    save_prediction(ticker.upper(), market_data, result)
+
+    result["calculated_stop_loss"] = real_stop_loss
     return result
 
 @app.get("/api/v1/risk/{ticker}")
@@ -294,3 +302,32 @@ async def get_risk_metrics(ticker: str, bias: str = "bullish"):
         "profit_target": profit_target,
         "risk_reward_ratio": "3:1"
     }
+
+@app.get("/api/v1/predictions")
+async def get_all_predictions():
+    db = psycopg2.connect(os.getenv("POSTGRES_URL"))
+    cursor = db.cursor()
+    cursor.execute("""
+        SELECT ticker, current_price, volume_spike_ratio, atr_14, 
+               raw_agent_output, backtest_status, created_at
+        FROM predictions
+        ORDER BY created_at DESC
+        LIMIT 20
+    """)
+    rows = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    predictions = []
+    for row in rows:
+        predictions.append({
+            "ticker": row[0],
+            "current_price": float(row[1]) if row[1] else None,
+            "volume_spike_ratio": float(row[2]) if row[2] else None,
+            "atr_14": float(row[3]) if row[3] else None,
+            "ai_analysis": row[4],
+            "backtest_status": row[5],
+            "created_at": row[6].isoformat() if row[6] else None
+        })
+
+    return {"predictions": predictions}
