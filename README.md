@@ -70,3 +70,34 @@ The frontend is currently a placeholder shell and does not yet render the full d
 - **Endpoint:** `GET /api/v1/anomalies`
 - **Query params:** `tickers` (comma-separated), `threshold` (default: 1.5)
 - **Example:** `GET /api/v1/anomalies?tickers=TSLA,NVDA&threshold=1.5`
+
+
+### July 1st - 15th:
+
+Updates:
+
+Product foundation:
+- Added Supabase JWT verification for protected endpoints.
+- Added user-owned watchlists and watchlist items.
+-Added persistent analysis-job records with ownership checks.
+- Added feedback and prediction metadata fields.
+- Added protected watchlist CRUD and analysis-job APIs.
+
+Database:
+- Added versioned SQL migration runner.
+- Added product-foundation migration.
+- Added migration repairing legacy prediction schemas.
+- Fixed structured prediction persistence.
+- Stopped saving nonexistent predictions as predicted_price=0.
+- Persisted bias, confidence, stop-loss, rationale, and raw output.
+
+Reliability:
+-Added /health for PostgreSQL and Redis.
+- Added Docker health checks.
+- Added explicit CORS configuration.
+- Added Finnhub request timeouts.
+- Made vector-pipeline failures visible.
+- Removed the fallback that converted malformed output into Bullish.
+- Isolated screener caches by tickers and threshold.
+- Prevented local model configuration from overwriting production credentials.
+- Normalized NumPy risk values before PostgreSQL persistence.
