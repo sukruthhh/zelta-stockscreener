@@ -1,0 +1,6 @@
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS predicted_price NUMERIC(10,4);
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS target_eval_date DATE;
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS actual_close_price NUMERIC(10,4);
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS absolute_error_pct NUMERIC(6,2);
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS is_correct_direction BOOLEAN;
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS is_evaluated BOOLEAN NOT NULL DEFAULT FALSE;

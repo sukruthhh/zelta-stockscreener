@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 import os
 import requests
+from config import get_settings
 
 # 1. Your original partner logic MUST be present in the file:
 def fetch_news(ticker: str):
     """Hits the live Finnhub API endpoint to pull company news for a given ticker."""
-    api_key = os.getenv("FINNHUB_API_KEY")
+    settings = get_settings()
+    api_key = settings.finnhub_api_key
 
     if not api_key:
         print("ERROR: FINNHUB_API_KEY environment variable is missing!")
@@ -25,7 +27,7 @@ def fetch_news(ticker: str):
     }
 
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=settings.news_timeout_seconds)
         if response.status_code == 200:
             return response.json()  # Returns the list of news articles
         else:

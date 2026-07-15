@@ -4,10 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Point to LM Studio running locally (free during development)
-os.environ["OPENAI_API_BASE"] = "http://localhost:1234/v1"
-os.environ["OPENAI_API_KEY"] = "lm-studio"
-os.environ["OPENAI_MODEL_NAME"] = "qwen2.5-coder-7b-instruct"
+# Local model overrides may be supplied in .env, but production credentials are never replaced here.
 
 
 def run_agent_analysis(ticker: str, market_data: dict, news_chunks: list[str]) -> dict:

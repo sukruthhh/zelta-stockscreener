@@ -262,17 +262,34 @@ def save_prediction(ticker: str, market_data: dict, agent_result: dict):
         INSERT INTO predictions 
         (
             ticker, current_price, predicted_price, volume_spike_ratio, atr_14, 
+            final_bias, confidence_score, calculated_stop_loss, risk_rationale,
             raw_agent_output, target_eval_date
         ) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING id
     """,
         (
             ticker,
             float(market_data.get("current_price") or 0),
-            float(agent_result.get("predicted_price") or 0),
+            (
+                float(agent_result["predicted_price"])
+                if agent_result.get("predicted_price") is not None
+                else None
+            ),
             float(market_data.get("volume_spike_ratio") or 0),
             float(market_data.get("atr_14") or 0),
+            agent_result.get("final_bias"),
+            (
+                float(agent_result["confidence_score"])
+                if agent_result.get("confidence_score") is not None
+                else None
+            ),
+            (
+                float(agent_result["calculated_stop_loss"])
+                if agent_result.get("calculated_stop_loss") is not None
+                else None
+            ),
+            agent_result.get("risk_rationale"),
             agent_result.get("ai_analysis"),
             target_date,
         ),

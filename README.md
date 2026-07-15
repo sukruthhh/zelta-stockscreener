@@ -8,6 +8,42 @@ Algorithmic Sentiment & Liquidity Screener.
 - Scanner logic that pulls yfinance data, computes annualized volatility and volume ratio, and stores qualifying scans in PostgreSQL.
 - Finnhub news ingestion with text chunking and OpenAI embeddings stored in pgvector.
 - Next.js frontend scaffold.
+- Supabase JWT verification for protected product endpoints.
+- User-owned watchlist persistence and analysis-job status records.
+- Versioned SQL migrations, health reporting, explicit CORS origins, and request timeouts for news ingestion.
+
+## Current product status
+
+The backend product foundation is under construction. Authentication verification, watchlist CRUD,
+and analysis-job records now exist, but there is not yet a background worker or usable frontend.
+Creating a job currently records it as `queued`; it will not run until the worker is added.
+
+Do not expose the application publicly until the worker, frontend auth flow, access-control tests,
+rate limiting, and deployment safeguards are complete.
+
+## Backend configuration
+
+1. Copy `backend/.env.example` to `backend/.env` and replace every required value.
+2. Create a Supabase project and set `SUPABASE_URL`. The API verifies access tokens against the
+   project's JWKS endpoint and fails closed when authentication is not configured.
+3. Install pinned dependencies with `pip install -r backend/requirements-dev.txt`.
+4. Start PostgreSQL and Redis with `docker compose up -d`.
+5. Start the API from `backend` with `uvicorn main:app --reload`.
+6. Check `GET /health` before exercising product routes.
+
+Database migrations run at API startup and are tracked in `schema_migrations`.
+
+### Protected product endpoints
+
+All routes below require `Authorization: Bearer <supabase-access-token>`:
+
+- `GET /api/v1/watchlist`
+- `POST /api/v1/watchlist/items`
+- `DELETE /api/v1/watchlist/items/{ticker}`
+- `POST /api/v1/analysis-jobs`
+- `GET /api/v1/analysis-jobs/{job_id}`
+
+Run focused unit tests from `backend` with `pytest`.
 
 ## Run the backend
 

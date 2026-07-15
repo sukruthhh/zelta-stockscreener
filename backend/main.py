@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
 from typing import List
+from uuid import UUID
 from dotenv import load_dotenv
-from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field, field_validator
 from agents import run_agent_analysis
 from functools import partial
-from database import init_db, save_scan_results, save_prediction
 import yfinance as yf
 import asyncio
 import psycopg2
@@ -17,10 +18,22 @@ from cache_service import market_cache
 from database import get_database_verification_snapshot, init_db, save_prediction, save_scan_results
 from news_harvester import harvest_and_pipeline_news
 from scanner import MarketScannerService
+from auth import CurrentUser, get_current_user
+from config import get_settings
+from migrations import run_migrations
+from product_repository import (
+    add_watchlist_item,
+    create_analysis_job,
+    get_analysis_job,
+    get_or_create_default_watchlist,
+    remove_watchlist_item,
+)
+from domain import morning_screener_cache_key, normalize_ticker, parse_assessment
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()  # runs once when server starts
+    run_migrations()
     yield
 
 app = FastAPI(
@@ -32,9 +45,16 @@ app = FastAPI(
         "running shell scripts."
     ),
 )
+settings = get_settings()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+)
 scanner_service = MarketScannerService()
 
-"""test"""
 class WatchlistRequest(BaseModel):
     tickers: List[str] = Field(
         ...,
@@ -46,6 +66,85 @@ class WatchlistRequest(BaseModel):
         examples=[1.0],
         description="Minimum annualized volatility required for a ticker to be included in alerts.",
     )
+
+
+class WatchlistItemRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=10)
+    company_name: str | None = Field(None, max_length=200)
+
+    @field_validator("ticker")
+    @classmethod
+    def validate_ticker(cls, value: str) -> str:
+        return normalize_ticker(value)
+
+
+class AnalysisJobRequest(BaseModel):
+    ticker: str = Field(min_length=1, max_length=10)
+
+    @field_validator("ticker")
+    @classmethod
+    def normalize_ticker(cls, value: str) -> str:
+        return normalize_ticker(value)
+
+
+@app.get("/health", tags=["operations"])
+async def health_check():
+    checks = {"database": "unavailable", "redis": "unavailable"}
+    try:
+        with psycopg2.connect(settings.postgres_url, connect_timeout=3) as db:
+            with db.cursor() as cursor:
+                cursor.execute("SELECT 1")
+        checks["database"] = "available"
+    except psycopg2.Error:
+        pass
+
+    try:
+        market_cache.client.ping()
+        checks["redis"] = "available"
+    except Exception:
+        pass
+
+    healthy = checks["database"] == "available"
+    return {
+        "status": "healthy" if healthy else "degraded",
+        "checks": checks,
+    }
+
+
+@app.get("/api/v1/watchlist", tags=["watchlist"])
+async def get_watchlist(user: CurrentUser = Depends(get_current_user)):
+    return get_or_create_default_watchlist(user.id)
+
+
+@app.post("/api/v1/watchlist/items", status_code=status.HTTP_201_CREATED, tags=["watchlist"])
+async def add_stock(request: WatchlistItemRequest, user: CurrentUser = Depends(get_current_user)):
+    item = add_watchlist_item(user.id, request.ticker, request.company_name)
+    if not item:
+        raise HTTPException(status_code=409, detail=f"{request.ticker} is already in your watchlist.")
+    return item
+
+
+@app.delete("/api/v1/watchlist/items/{ticker}", status_code=status.HTTP_204_NO_CONTENT, tags=["watchlist"])
+async def remove_stock(ticker: str, user: CurrentUser = Depends(get_current_user)):
+    try:
+        normalized = normalize_ticker(ticker)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if not remove_watchlist_item(user.id, normalized):
+        raise HTTPException(status_code=404, detail="Watchlist item not found.")
+
+
+@app.post("/api/v1/analysis-jobs", status_code=status.HTTP_202_ACCEPTED, tags=["analysis"])
+async def queue_analysis(request: AnalysisJobRequest, user: CurrentUser = Depends(get_current_user)):
+    return create_analysis_job(user.id, request.ticker)
+
+
+@app.get("/api/v1/analysis-jobs/{job_id}", tags=["analysis"])
+async def read_analysis_job(job_id: UUID, user: CurrentUser = Depends(get_current_user)):
+    job = get_analysis_job(user.id, job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Analysis job not found.")
+    return job
 
 @app.get(
     "/api/v1/test-ticker/{symbol}",
@@ -149,7 +248,8 @@ async def get_single_ticker_history(symbol: str):
     ),
 )
 async def morning_batch_screener(request: WatchlistRequest):
-    cache_key = "screener:morning:matched"
+    normalized_tickers = sorted({normalize_ticker(ticker) for ticker in request.tickers})
+    cache_key = morning_screener_cache_key(normalized_tickers, request.volatility_threshold)
 
     cached_alerts = market_cache.get_cached_feed(cache_key)
     if cached_alerts:
@@ -160,12 +260,12 @@ async def morning_batch_screener(request: WatchlistRequest):
         }
 
     alerts = scanner_service.run_morning_screener(
-        request.tickers, request.volatility_threshold
+        normalized_tickers, request.volatility_threshold
     )
     save_scan_results(alerts)
     
     if alerts:
-        market_cache.cache_morning_alerts(alerts)
+        market_cache.set_market_feed(cache_key, alerts, ttl_seconds=900)
         return {
             "status": "morning_scan_complete",
             "source": "live_api",
@@ -269,16 +369,28 @@ async def analyse_ticker(ticker: str):
         partial(run_agent_analysis, ticker.upper(), market_data, news_chunks)
     )
 
-    # Try to detect bias from the agent output, default to bullish
     raw_output = result.get("ai_analysis", "")
-    bias = "bearish" if "bearish" in raw_output.lower() else "bullish"
+    try:
+        bias, parsed_output = parse_assessment(raw_output)
+    except (ValueError, KeyError, TypeError, AttributeError) as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Analysis failed because the model returned an invalid result. Try again.",
+        ) from exc
     real_stop_loss = scanner_service.calculate_stop_loss(current_price, atr, bias)
 
     market_data["calculated_stop_loss"] = real_stop_loss
+    result.update(
+        {
+            "final_bias": parsed_output["final_bias"],
+            "confidence_score": parsed_output.get("confidence_score"),
+            "risk_rationale": parsed_output.get("risk_rationale"),
+            "calculated_stop_loss": real_stop_loss,
+        }
+    )
 
     save_prediction(ticker.upper(), market_data, result)
 
-    result["calculated_stop_loss"] = real_stop_loss
     return result
 
 @app.get("/api/v1/risk/{ticker}")

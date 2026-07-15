@@ -79,6 +79,7 @@ def process_ticker(ticker: str, articles: list[dict]):
     except Exception as e:
         db.rollback()
         print(f"Error processing ticker: {e}")
+        raise
     finally:
         db.close()
         print(f"Ticker processed: {ticker}")

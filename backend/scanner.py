@@ -158,11 +158,11 @@ class MarketScannerService:
         """
 
         if bias.lower() == "bullish":
-            return round(current_price - (2 * atr), 2)
+            return float(round(current_price - (2 * atr), 2))
         elif bias.lower() == "bearish":
-            return round(current_price + (2 * atr), 2)
+            return float(round(current_price + (2 * atr), 2))
         else:
-            return round(current_price - (1.5 * atr), 2)
+            return float(round(current_price - (1.5 * atr), 2))
 
 
     def calculate_profit_target(self, current_price: float, atr: float, bias: str) -> float:
@@ -170,8 +170,8 @@ class MarketScannerService:
         """Calculates profit target based on ATR (3:1 reward-to-risk ratio) """
 
         if bias.lower() == "bullish":
-            return round(current_price + (3 * atr), 2)
+            return float(round(current_price + (3 * atr), 2))
         elif bias.lower() == "bearish":
-            return round(current_price - (3 * atr), 2)
+            return float(round(current_price - (3 * atr), 2))
         else:
-            return round(current_price + (2 * atr), 2)    
+            return float(round(current_price + (2 * atr), 2))
