@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
-from agents import run_agent_analysis
-from functools import partial
 import yfinance as yf
 import asyncio
 import psycopg2
@@ -15,6 +13,8 @@ import os
 load_dotenv()
 
 from cache_service import market_cache
+from analysis_engine import DeterministicAnalysisEngine
+from analysis_models import AnalysisResult
 from database import get_database_verification_snapshot, init_db, save_prediction, save_scan_results
 from news_harvester import harvest_and_pipeline_news
 from scanner import MarketScannerService
@@ -54,6 +54,7 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type"],
 )
 scanner_service = MarketScannerService()
+analysis_engine = DeterministicAnalysisEngine()
 
 class WatchlistRequest(BaseModel):
     tickers: List[str] = Field(
@@ -145,6 +146,31 @@ async def read_analysis_job(job_id: UUID, user: CurrentUser = Depends(get_curren
     if not job:
         raise HTTPException(status_code=404, detail="Analysis job not found.")
     return job
+
+
+@app.get(
+    "/api/v1/analysis/preview/{ticker}",
+    response_model=AnalysisResult,
+    tags=["analysis"],
+    summary="Generate an explainable technical assessment",
+)
+async def preview_analysis(ticker: str, user: CurrentUser = Depends(get_current_user)):
+    try:
+        normalized = normalize_ticker(ticker)
+        price_data = await asyncio.to_thread(
+            scanner_service.fetch_yfinance_data,
+            normalized,
+            "6mo",
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="Market data is currently unavailable. Try again later.",
+        ) from exc
+
+    return analysis_engine.analyze(normalized, price_data)
 
 @app.get(
     "/api/v1/test-ticker/{symbol}",
@@ -332,8 +358,17 @@ async def get_volume_anomalies(tickers: str = "AAPL,MSFT,GOOGL", threshold: floa
         "anomalies": anomalies,
     }
 
-@app.post("/api/v1/analyse/{ticker}")
-async def analyse_ticker(ticker: str):
+@app.post(
+    "/api/v1/analyse/{ticker}",
+    tags=["experiments"],
+    deprecated=True,
+    summary="Run the legacy multi-agent experiment",
+)
+async def analyse_ticker(ticker: str, user: CurrentUser = Depends(get_current_user)):
+    from functools import partial
+
+    from agents import run_agent_analysis
+
     price_data = scanner_service.fetch_yfinance_data(ticker.upper(), period="3mo")
     if len(price_data) < 20:
         return {"error": f"Insufficient data for {ticker}"}

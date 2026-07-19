@@ -69,6 +69,9 @@ class MarketScannerService:
         return [
             {
                 "date": idx.strftime("%Y-%m-%d"),
+                "open": float(row["Open"]),
+                "high": float(row["High"]),
+                "low": float(row["Low"]),
                 "close": float(row["Close"]),
                 "volume": int(row["Volume"]),
             }
