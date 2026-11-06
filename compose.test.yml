@@ -1,4 +1,24 @@
 services:
+  api-smoke:
+    profiles: [smoke]
+    build:
+      context: ./backend
+    environment:
+      POSTGRES_URL: postgresql://zelta_test:test-only@test-db:5432/zelta_test
+      SUPABASE_URL: https://project.example.com
+      REDIS_URL: redis://test-redis:6379/0
+      NEWS_SENTIMENT_ENABLED: "false"
+      ENABLE_DIAGNOSTIC_ROUTES: "false"
+    depends_on:
+      test-db:
+        condition: service_healthy
+      test-redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=5)"]
+      interval: 2s
+      timeout: 6s
+      retries: 20
   test-db:
     image: pgvector/pgvector:pg16
     environment:

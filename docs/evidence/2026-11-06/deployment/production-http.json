@@ -1,0 +1,6 @@
+{
+  "/ready": 200,
+  "/health": 200,
+  "/api/v1/watchlist": 401,
+  "/api/v1/verification/database": 404
+}

@@ -10,6 +10,8 @@ below is not proof of a running deployment. The historical agent design is super
 deterministic analysis path; news ingestion still uses OpenAI embeddings when configured.
 See [the delivery and measurement plan](docs/delivery-plan.md) for the remaining release work,
 metric definitions, the cache-freshness fix, and controlled upstream-call measurements.
+For the first hosted release, follow [the deployment guide](docs/deploy.md). The initial
+configuration uses technical-only analysis and disables diagnostic routes.
 
 Run backend checks against a separate temporary database (no API keys required):
 
@@ -79,13 +81,17 @@ skipped automatically (see `backend/tests/conftest.py`) if no database is reacha
 ## Run the backend
 
 1. Start PostgreSQL and Redis with Docker Compose.
-2. Set the required environment variables, especially `POSTGRES_URL`, `FINNHUB_API_KEY`, and `OPENAI_API_KEY`.
+2. Set `POSTGRES_URL` and `SUPABASE_URL`. The initial technical-only configuration does not need
+   Finnhub/OpenAI keys; those are only needed when enabling news ingestion.
 3. Start the FastAPI server.
 4. Open [http://localhost:8000/docs](http://localhost:8000/docs).
 
 ## Verify in Swagger UI
 
 Use the built-in docs instead of shell scripts to confirm each stage of the pipeline.
+These diagnostic endpoints are disabled by default. For local development, explicitly set
+`ENABLE_DIAGNOSTIC_ROUTES=true` and authorize with a Supabase access token. Leave them disabled
+in a public deployment; enabling them grants access to any authenticated user.
 
 1. `GET /api/v1/test-ticker/{symbol}`
 	- Confirms the backend can reach yfinance and fetch a live close price.
@@ -159,9 +165,10 @@ phone, not just a desk):
 
 ## Deployment (free tier)
 
-Everything below fits in each provider's free tier. This is deliberately four small services
-instead of one big one: each does the one thing it's actually good at, and none of them costs
-anything at this scale.
+The initial deployment guide above uses hosted frontend/API services and the existing Supabase
+project. Provider free tiers have limits and can sleep or pause. Redis is optional, and news
+embeddings are disabled initially to avoid paid API usage. Confirm displayed plans and costs
+before provisioning resources.
 
 | Layer | Provider | Why |
 |---|---|---|

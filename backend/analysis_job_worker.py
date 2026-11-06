@@ -32,6 +32,7 @@ from news_harvester import harvest_and_pipeline_news
 from product_repository import save_analysis_result, transition_analysis_job
 from scanner import MarketScannerService
 from sentiment_engine import NewsChunk, SentimentAnchors, load_anchors, score_news
+from config import get_settings
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ class AnalysisJobDependencies:
     fetch_news_chunks: Callable[[str], Sequence[NewsChunk]]
     load_anchors: Callable[[], SentimentAnchors | None]
     analysis_engine: DeterministicAnalysisEngine
+    news_enabled: bool = True
 
     @classmethod
     def live(cls) -> "AnalysisJobDependencies":
@@ -62,6 +64,7 @@ class AnalysisJobDependencies:
             fetch_news_chunks=fetch_recent_news_chunks,
             load_anchors=load_anchors,
             analysis_engine=DeterministicAnalysisEngine(),
+            news_enabled=get_settings().news_sentiment_enabled,
         )
 
 
@@ -88,7 +91,7 @@ def run_analysis_job(
 
         transition_analysis_job(job_id, AnalysisJobStatus.READING_NEWS)
         final_result = technical_result
-        if technical_result.status not in {"insufficient_data", "failed"}:
+        if dependencies.news_enabled and technical_result.status not in {"insufficient_data", "failed"}:
             final_result = _with_optional_news(ticker, technical_result, dependencies)
         transition_analysis_job(job_id, AnalysisJobStatus.CALCULATING_RISK)
 

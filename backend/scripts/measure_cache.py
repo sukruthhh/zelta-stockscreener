@@ -20,6 +20,7 @@ from fastapi.testclient import TestClient
 import pandas as pd
 
 import main
+from auth import require_diagnostic_access
 from cache_service import intraday_ttl_seconds
 
 
@@ -60,7 +61,9 @@ def run_replay(output: Path) -> dict:
 
     try:
         # Startup uses the isolated DB; the measured endpoint uses Redis/provider only.
-        with TestClient(main.app) as client, patch.object(main.yf, "Ticker", FixtureTicker):
+        with TestClient(main.app) as client, patch.object(main.yf, "Ticker", FixtureTicker), patch.dict(
+            main.app.dependency_overrides, {require_diagnostic_access: lambda: None},
+        ):
             for round_number in range(1, 4):
                 for mode in ("uncached", "cached"):
                     main.market_cache.client.delete(*keys)

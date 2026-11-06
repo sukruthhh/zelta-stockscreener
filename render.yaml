@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: zelta-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /ready
+    envVars:
+      - key: POSTGRES_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: NEWS_SENTIMENT_ENABLED
+        value: "false"
+      - key: ENABLE_DIAGNOSTIC_ROUTES
+        value: "false"
+      - key: SUPABASE_JWT_AUDIENCE
+        value: authenticated
+      - key: MARKET_DATA_TIMEOUT_SECONDS
+        value: "15"

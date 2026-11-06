@@ -28,3 +28,9 @@ def test_settings_parse_multiple_comma_separated_origins():
 def test_settings_default_cors_origin_when_unset():
     settings = _settings()
     assert settings.cors_origins == ["http://localhost:3000"]
+
+
+def test_deployment_switches_parse_boolean_environment_values():
+    settings = _settings(NEWS_SENTIMENT_ENABLED="false", ENABLE_DIAGNOSTIC_ROUTES="false")
+    assert settings.news_sentiment_enabled is False
+    assert settings.enable_diagnostic_routes is False

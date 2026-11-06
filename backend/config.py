@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     cors_origins_raw: str = Field("http://localhost:3000", alias="CORS_ORIGINS")
     market_data_timeout_seconds: float = Field(15, alias="MARKET_DATA_TIMEOUT_SECONDS", gt=0)
     news_timeout_seconds: float = Field(10, alias="NEWS_TIMEOUT_SECONDS", gt=0)
+    news_sentiment_enabled: bool = Field(True, alias="NEWS_SENTIMENT_ENABLED")
+    enable_diagnostic_routes: bool = Field(False, alias="ENABLE_DIAGNOSTIC_ROUTES")
 
     @property
     def cors_origins(self) -> list[str]:

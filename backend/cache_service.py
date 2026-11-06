@@ -33,7 +33,9 @@ def intraday_ttl_seconds(now: datetime | None = None) -> int:
 class RedisCacheService:
     def __init__(self):
         redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
-        self.pool = redis.ConnectionPool.from_url(redis_url, decode_responses=True)
+        self.pool = redis.ConnectionPool.from_url(
+            redis_url, decode_responses=True, socket_connect_timeout=2, socket_timeout=2,
+        )
 
     @property
     def client(self):

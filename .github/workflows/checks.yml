@@ -13,6 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test with isolated PostgreSQL
         run: docker compose -p zelta-validation -f compose.test.yml up --build --abort-on-container-exit --exit-code-from tests
+      - name: Start production API with isolated dependencies
+        run: docker compose -p zelta-validation -f compose.test.yml --profile smoke up -d --build --wait --wait-timeout 120 api-smoke
       - name: Replay cache workload with isolated Redis
         run: |
           mkdir -p "$RUNNER_TEMP/zelta-evidence"
@@ -24,7 +26,7 @@ jobs:
           path: ${{ runner.temp }}/zelta-evidence/
       - name: Remove test containers
         if: always()
-        run: docker compose -p zelta-validation -f compose.test.yml down
+        run: docker compose -p zelta-validation -f compose.test.yml --profile smoke down
   frontend:
     runs-on: ubuntu-latest
     defaults:

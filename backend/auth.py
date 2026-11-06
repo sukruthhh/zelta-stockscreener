@@ -43,3 +43,12 @@ def get_current_user(
         raise HTTPException(status_code=401, detail="Access token has no user identity.")
     return CurrentUser(id=subject, email=claims.get("email"))
 
+
+def require_diagnostic_access(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
+    settings: Settings = Depends(get_settings),
+) -> CurrentUser:
+    if not settings.enable_diagnostic_routes:
+        raise HTTPException(status_code=404, detail="Not found.")
+    return get_current_user(credentials, settings)
+

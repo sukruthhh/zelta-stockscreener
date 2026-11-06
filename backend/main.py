@@ -4,6 +4,7 @@ from uuid import UUID
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, field_validator
 import yfinance as yf
 import asyncio
@@ -24,7 +25,7 @@ from database import (
 )
 from news_harvester import harvest_and_pipeline_news
 from scanner import MarketScannerService
-from auth import CurrentUser, get_current_user
+from auth import CurrentUser, get_current_user, require_diagnostic_access
 from config import get_settings
 from migrations import run_migrations
 from product_repository import (
@@ -95,19 +96,37 @@ class AnalysisJobRequest(BaseModel):
         return normalize_ticker(value)
 
 
-@app.get("/health", tags=["operations"])
-async def health_check():
-    checks = {"database": "unavailable", "redis": "unavailable"}
+def _database_available() -> bool:
     try:
         with psycopg2.connect(settings.postgres_url, connect_timeout=3) as db:
             with db.cursor() as cursor:
                 cursor.execute("SELECT 1")
-        checks["database"] = "available"
+        return True
     except psycopg2.Error:
-        pass
+        return False
+
+
+@app.get("/ready", tags=["operations"])
+async def readiness_check():
+    database_available = await asyncio.to_thread(_database_available)
+    auth_configured = bool(settings.supabase_url)
+    ready = database_available and auth_configured
+    return JSONResponse(status_code=200 if ready else 503, content={
+        "status": "ready" if ready else "not_ready",
+        "checks": {
+            "database": "available" if database_available else "unavailable",
+            "authentication": "configured" if auth_configured else "not_configured",
+        },
+    })
+
+
+@app.get("/health", tags=["operations"])
+async def health_check():
+    database_available = await asyncio.to_thread(_database_available)
+    checks = {"database": "available" if database_available else "unavailable", "redis": "unavailable"}
 
     try:
-        market_cache.client.ping()
+        await asyncio.to_thread(market_cache.client.ping)
         checks["redis"] = "available"
     except Exception:
         pass
@@ -187,6 +206,7 @@ async def preview_analysis(ticker: str, user: CurrentUser = Depends(get_current_
 
 @app.get(
     "/api/v1/test-ticker/{symbol}",
+    dependencies=[Depends(require_diagnostic_access)],
     summary="Verify live yfinance connectivity",
     description=(
         "Use this endpoint in Swagger to confirm the API can reach yfinance and "
@@ -217,6 +237,7 @@ async def test_ticker(symbol: str):
 
 @app.post(
     "/api/v1/harvest/{ticker}",
+    dependencies=[Depends(require_diagnostic_access)],
     summary="Verify news ingestion and vector storage",
     description=(
         "Fetch Finnhub news for the ticker, chunk it, embed it, and store it in "
@@ -244,6 +265,7 @@ async def harvest_news(ticker: str):
 
 @app.get(
     "/api/v1/scan/history/{symbol}",
+    dependencies=[Depends(require_diagnostic_access)],
     summary="Review computed scanner history",
     description=(
         "Return the rolling volatility and volume-ratio series calculated from "
@@ -279,6 +301,7 @@ async def get_single_ticker_history(symbol: str):
 
 @app.post(
     "/api/v1/scan/morning-screener",
+    dependencies=[Depends(require_diagnostic_access)],
     summary="Run the morning screener",
     description=(
         "Pull yfinance data for the submitted tickers, compute annualized "
@@ -321,6 +344,7 @@ async def morning_batch_screener(request: WatchlistRequest):
 
 @app.get(
     "/api/v1/verification/database",
+    dependencies=[Depends(require_diagnostic_access)],
     summary="Verify database persistence",
     description=(
         "Return row counts and the most recent stored scan/news rows so you can "
@@ -341,7 +365,7 @@ async def verify_database(limit: int = 10, ticker: str | None = None):
     return {**response, "source": "live_api"}
 
 
-@app.get("/api/v1/anomalies")
+@app.get("/api/v1/anomalies", dependencies=[Depends(require_diagnostic_access)])
 async def get_volume_anomalies(tickers: str = "AAPL,MSFT,GOOGL", threshold: float = 1.5):
     """
     Detect volume spikes that exceed the Average Daily Volume (ADV) multiplier threshold.
@@ -373,6 +397,7 @@ async def get_volume_anomalies(tickers: str = "AAPL,MSFT,GOOGL", threshold: floa
 
 @app.post(
     "/api/v1/analyse/{ticker}",
+    dependencies=[Depends(require_diagnostic_access)],
     tags=["experiments"],
     deprecated=True,
     summary="Run the legacy multi-agent experiment",
@@ -441,7 +466,7 @@ async def analyse_ticker(ticker: str, user: CurrentUser = Depends(get_current_us
 
     return result
 
-@app.get("/api/v1/risk/{ticker}")
+@app.get("/api/v1/risk/{ticker}", dependencies=[Depends(require_diagnostic_access)])
 async def get_risk_metrics(ticker: str, bias: str = "bullish"):
     price_data = scanner_service.fetch_yfinance_data(ticker.upper(), period="1mo")
     if len(price_data) < 14:
@@ -463,7 +488,7 @@ async def get_risk_metrics(ticker: str, bias: str = "bullish"):
         "risk_reward_ratio": "3:1"
     }
 
-@app.get("/api/v1/predictions")
+@app.get("/api/v1/predictions", dependencies=[Depends(require_diagnostic_access)])
 async def get_all_predictions():
     db = psycopg2.connect(os.getenv("POSTGRES_URL"))
     cursor = db.cursor()

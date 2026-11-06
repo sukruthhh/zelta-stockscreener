@@ -204,3 +204,18 @@ def test_worker_still_fails_when_result_cannot_be_saved(monkeypatch, worker_writ
     result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=_fake_deps())
     assert result is None
     assert worker_writes["states"][-1] == "failed"
+
+
+def test_technical_only_mode_never_touches_news_services(worker_writes):
+    deps = _fake_deps()
+    deps.news_enabled = False
+
+    def unexpected(*args, **kwargs):
+        pytest.fail("News services must not run in technical-only mode")
+
+    deps.has_fresh_news = deps.harvest_news = deps.fetch_news_chunks = deps.load_anchors = unexpected
+    result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    assert result is not None
+    assert result.assessment == "Bullish"
+    assert result.macro_sentiment_score is None
+    assert worker_writes["states"][-1] == "complete"

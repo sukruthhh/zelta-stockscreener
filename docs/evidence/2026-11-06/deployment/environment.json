@@ -1,0 +1,21 @@
+{
+  "base_revision": "1b50bdaefbea8587058ecdc86f71d60a19b15531",
+  "mode": "Local isolated database/cache and fixture providers; no actual hosting or Supabase authentication",
+  "backend_tests": 115,
+  "production_image": "sha256:75b1ae038c68176db333af69b4640373033d6d1a24b89756827f98ae0b68d202",
+  "source_sha256": {
+    "backend/config.py": "6855e36287eefc573671170b42be7f72818477937723b2ee2872af9bf1432bae",
+    "backend/auth.py": "22ce4b0433df1920f4d8c823bbd875b305b2814b2c555443ec82ffcbca45232f",
+    "backend/main.py": "a888f243216a1c64ff3db7bc2df4bbb316e483ab762a79465109b93ae5bc0065",
+    "backend/analysis_job_worker.py": "1237569fc8378fd1e166813782891fbf3354fecf147b7d69a1980064299a48f5",
+    "backend/cache_service.py": "b6a3a6d367edce97ed6c1f9156a77ffe1d8d2b74e345c2dcf6c541cca9d6d416",
+    "backend/scripts/check_deployment.py": "c473d9960170613869bad779e4e5319a52f2c90bf4768eea4a756ddd365248d7",
+    "backend/scripts/measure_cache.py": "7719d3d2ca4752f1f849330eb87a011cb7dead486659cd2e5bd35a1038b460fb",
+    "backend/tests/test_deployment.py": "b703b92b9cf7771417ea894f440f56763b9fbdf6c3fbde4cf6cffbea183ef6c6",
+    "backend/tests/test_deployment_check.py": "132ce49064a8e947720a0a4338c94cf603a354d2e9fafbae0281568b65f4848c",
+    "compose.test.yml": "2cb62e62316de34d2ddd2ffd19cc9c4ade650ab03ce621e89482bff43dbeff3d",
+    "render.yaml": "fbf83ea84a8da962e2805beb46cbe10a39eff517b4af39f312bec2f02b76e496",
+    "frontend/vercel.json": "e1d975d5aed6ad5a179d6e466a6b5bad8ce1fea91fda4137db05b351261a50f5",
+    ".github/workflows/checks.yml": "09bc6891f4174c512ba33e6d1ca2f881a35096b60fbf84b093915d1bdcbafd19"
+  }
+}
