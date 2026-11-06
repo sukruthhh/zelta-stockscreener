@@ -1,0 +1,108 @@
+Attaching to test-db-1, test-redis-1, tests-1
+ Container zelta-validation-test-redis-1 Starting 
+ Container zelta-validation-test-db-1 Starting 
+ Container zelta-validation-test-db-1 Started 
+test-redis-1  | 1:C 06 Nov 2026 17:53:11.036 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+test-redis-1  | 1:C 06 Nov 2026 17:53:11.036 * Redis version=7.4.9, bits=64, commit=00000000, modified=0, pid=1, just started
+test-redis-1  | 1:C 06 Nov 2026 17:53:11.036 * Configuration loaded
+test-redis-1  | 1:M 06 Nov 2026 17:53:11.036 * monotonic clock: POSIX clock_gettime
+test-redis-1  | 1:M 06 Nov 2026 17:53:11.039 * Running mode=standalone, port=6379.
+test-redis-1  | 1:M 06 Nov 2026 17:53:11.040 * Server initialized
+test-redis-1  | 1:M 06 Nov 2026 17:53:11.040 * Ready to accept connections tcp
+test-db-1     | The files belonging to this database system will be owned by user "postgres".
+ Container zelta-validation-test-redis-1 Started 
+test-db-1     | This user must also own the server process.
+test-db-1     | 
+test-db-1     | The database cluster will be initialized with locale "en_US.utf8".
+test-db-1     | The default database encoding has accordingly been set to "UTF8".
+test-db-1     | The default text search configuration will be set to "english".
+test-db-1     | 
+test-db-1     | Data page checksums are disabled.
+ Container zelta-validation-test-db-1 Waiting 
+ Container zelta-validation-test-redis-1 Waiting 
+test-db-1     | 
+test-db-1     | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+test-db-1     | creating subdirectories ... ok
+test-db-1     | selecting dynamic shared memory implementation ... posix
+test-db-1     | selecting default max_connections ... 100
+test-db-1     | selecting default shared_buffers ... 128MB
+test-db-1     | selecting default time zone ... Etc/UTC
+test-db-1     | creating configuration files ... ok
+test-db-1     | running bootstrap script ... ok
+test-db-1     | performing post-bootstrap initialization ... ok
+test-db-1     | syncing data to disk ... ok
+test-db-1     | initdb: warning: enabling "trust" authentication for local connections
+test-db-1     | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+test-db-1     | 
+test-db-1     | 
+test-db-1     | Success. You can now start the database server using:
+test-db-1     | 
+test-db-1     |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+test-db-1     | 
+test-db-1     | waiting for server to start....2026-11-06 17:53:11.379 UTC [49] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+test-db-1     | 2026-11-06 17:53:11.381 UTC [49] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+test-db-1     | 2026-11-06 17:53:11.383 UTC [52] LOG:  database system was shut down at 2026-11-06 17:53:11 UTC
+test-db-1     | 2026-11-06 17:53:11.386 UTC [49] LOG:  database system is ready to accept connections
+test-db-1     |  done
+test-db-1     | server started
+test-db-1     | CREATE DATABASE
+test-db-1     | 
+test-db-1     | 
+test-db-1     | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+test-db-1     | 
+test-db-1     | waiting for server to shut down....2026-11-06 17:53:11.531 UTC [49] LOG:  received fast shutdown request
+test-db-1     | 2026-11-06 17:53:11.531 UTC [49] LOG:  aborting any active transactions
+test-db-1     | 2026-11-06 17:53:11.532 UTC [49] LOG:  background worker "logical replication launcher" (PID 55) exited with exit code 1
+test-db-1     | 2026-11-06 17:53:11.533 UTC [50] LOG:  shutting down
+test-db-1     | 2026-11-06 17:53:11.533 UTC [50] LOG:  checkpoint starting: shutdown immediate
+test-db-1     | 2026-11-06 17:53:11.538 UTC [50] LOG:  checkpoint complete: wrote 922 buffers (5.6%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.001 s, total=0.006 s; sync files=301, longest=0.001 s, average=0.000 s; distance=4255 kB, estimate=4255 kB; lsn=0/1912118, redo lsn=0/1912118
+test-db-1     | 2026-11-06 17:53:11.542 UTC [49] LOG:  database system is shut down
+test-db-1     |  done
+test-db-1     | server stopped
+test-db-1     | 
+test-db-1     | PostgreSQL init process complete; ready for start up.
+test-db-1     | 
+test-db-1     | 2026-11-06 17:53:11.647 UTC [1] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+test-db-1     | 2026-11-06 17:53:11.647 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+test-db-1     | 2026-11-06 17:53:11.647 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+test-db-1     | 2026-11-06 17:53:11.649 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+test-db-1     | 2026-11-06 17:53:11.652 UTC [65] LOG:  database system was shut down at 2026-11-06 17:53:11 UTC
+test-db-1     | 2026-11-06 17:53:11.655 UTC [1] LOG:  database system is ready to accept connections
+ Container zelta-validation-test-redis-1 Healthy 
+ Container zelta-validation-test-db-1 Healthy 
+ Container zelta-validation-tests-1 Starting 
+ Container zelta-validation-tests-1 Started 
+test-db-1     | 2026-11-06 17:53:16.700 UTC [111] ERROR:  new row violates row-level security policy for table "watchlists"
+test-db-1     | 2026-11-06 17:53:16.700 UTC [111] STATEMENT:  INSERT INTO watchlists (user_id, name) VALUES ('other-user', 'Bypass')
+tests-1       | ........................................................................ [ 61%]
+tests-1       | ..............................................                           [100%]
+tests-1       | =============================== warnings summary ===============================
+tests-1       | ../usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1
+tests-1       |   /usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+tests-1       |     from starlette.testclient import TestClient as TestClient  # noqa
+tests-1       | 
+tests-1       | -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+tests-1       | 118 passed, 1 warning in 2.90s
+
+[Ktests-1 exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container zelta-validation-tests-1 Stopping 
+ Container zelta-validation-tests-1 Stopped 
+ Container zelta-validation-test-redis-1 Stopping 
+ Container zelta-validation-test-db-1 Stopping 
+test-redis-1  | 1:signal-handler (1793987597) Received SIGTERM scheduling shutdown...
+test-db-1     | 2026-11-06 17:53:17.981 UTC [1] LOG:  received fast shutdown request
+test-db-1     | 2026-11-06 17:53:17.981 UTC [1] LOG:  aborting any active transactions
+test-db-1     | 2026-11-06 17:53:17.987 UTC [1] LOG:  background worker "logical replication launcher" (PID 68) exited with exit code 1
+test-db-1     | 2026-11-06 17:53:17.987 UTC [63] LOG:  shutting down
+test-db-1     | 2026-11-06 17:53:17.987 UTC [63] LOG:  checkpoint starting: shutdown immediate
+test-db-1     | 2026-11-06 17:53:17.993 UTC [63] LOG:  checkpoint complete: wrote 480 buffers (2.9%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.001 s, total=0.007 s; sync files=150, longest=0.001 s, average=0.000 s; distance=1995 kB, estimate=1995 kB; lsn=0/1B04D98, redo lsn=0/1B04D98
+test-db-1     | 2026-11-06 17:53:17.996 UTC [1] LOG:  database system is shut down
+test-redis-1  | 1:M 06 Nov 2026 17:53:18.008 * User requested shutdown...
+test-redis-1  | 1:M 06 Nov 2026 17:53:18.008 # Redis is now ready to exit, bye bye...
+ Container zelta-validation-test-db-1 Stopped 
+
+[Ktest-db-1 exited with code 0
+ Container zelta-validation-test-redis-1 Stopped 
+
+[Ktest-redis-1 exited with code 0

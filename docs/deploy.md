@@ -13,6 +13,11 @@ Use Supabase's Connect panel to obtain the PostgreSQL connection string suitable
 use SSL and the pooler if direct connectivity is unavailable. Enter credentials only in service
 environment settings. The public project URL and anon/publishable key are used by the frontend;
 the database password and service-role key must never appear in `NEXT_PUBLIC_*` variables.
+Migration 005 enables row-level security and removes direct anonymous/authenticated table access
+for the nine Zelta-managed tables. Browsers must use FastAPI, which applies user ownership checks.
+Use the trusted database owner connection for backend migrations and access; a restricted custom
+database role requires an intentional privilege/policy design. This does not modify Supabase Auth
+tables or unrelated application tables.
 
 ## Create the Render API
 
@@ -63,6 +68,12 @@ Configuration, set the production Site URL and allow that origin as an email red
 The current email-link flow returns to the website root. Avoid broad wildcard redirect rules;
 add local development separately if needed. Confirm the chosen plans remain within your budget.
 
+Before inviting Mom or other end users, configure production email delivery. Supabase's default
+email service only sends to project-team addresses, so a successful sign-in email to the owner
+does not establish that other users can sign in. Follow [Supabase's SMTP setup](https://supabase.com/docs/guides/auth/auth-smtp)
+to configure an appropriate provider, review any cost first, and test delivery to the actual end-user
+address. Do not give users project-administration membership merely to bypass this restriction.
+
 ## Check the deployed services
 
 From `backend/` in the intended Python environment:
@@ -96,7 +107,8 @@ and [Supabase project pausing](https://supabase.com/docs/guides/platform/free-pr
 
 ## Verification checkpoint November 6 2026
 
-The expanded backend suite passes 115 tests against isolated PostgreSQL and Redis. The actual
+The final backend suite passes 118 tests against isolated PostgreSQL and Redis, including browser-role
+row-security checks and revocation of prior grants. The actual
 production image was built and started with temporary data services and a fixture Supabase URL:
 `/ready` and `/health` returned 200, an unauthenticated watchlist request returned 401, and the
 disabled database diagnostic returned 404. The existing cache replay also passed with an explicit

@@ -1,0 +1,80 @@
+ Image zelta-production-smoke-api-smoke Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 569B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.02kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 118B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 2.43kB done
+#5 DONE 0.0s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:4840d514c583a4d3d8cad3940e68dee6f0f6f3635c12fcd0a3d74c21a5b93a54
+#6 resolve docker.io/library/python:3.12-slim@sha256:4840d514c583a4d3d8cad3940e68dee6f0f6f3635c12fcd0a3d74c21a5b93a54 0.0s done
+#6 DONE 0.0s
+
+#7 [2/6] WORKDIR /app
+#7 CACHED
+
+#8 [3/6] RUN apt-get update     && apt-get install -y --no-install-recommends gcc libpq-dev     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/6] COPY requirements.txt .
+#9 CACHED
+
+#10 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [6/6] COPY . .
+#11 DONE 0.0s
+
+#12 exporting to image
+#12 exporting layers 0.1s done
+#12 exporting manifest sha256:241de5c899297abbd6816535a28ffd23641b7cb4eba998a39f884585e60b3e3d 0.0s done
+#12 exporting config sha256:e60bc4b628d689e0a3b95ae3e54d2b62b4605cb18296bcbb95676dfe12e9c4a5
+#12 exporting config sha256:e60bc4b628d689e0a3b95ae3e54d2b62b4605cb18296bcbb95676dfe12e9c4a5 0.0s done
+#12 exporting attestation manifest sha256:ca55a9e888e4a5b12c6477142bf5de4ea3a82542e2479ff241b49020e3f00097 0.0s done
+#12 exporting manifest list sha256:55f33429baad35b432a5adda0ca83cc03a9baa661cc5beb3e2c3bd8287bc3344 0.0s done
+#12 naming to docker.io/library/zelta-production-smoke-api-smoke:latest done
+#12 unpacking to docker.io/library/zelta-production-smoke-api-smoke:latest 0.0s done
+#12 DONE 0.2s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image zelta-production-smoke-api-smoke Built 
+ Network zelta-production-smoke_default Creating 
+ Network zelta-production-smoke_default Created 
+ Container zelta-production-smoke-test-db-1 Creating 
+ Container zelta-production-smoke-test-redis-1 Creating 
+ Container zelta-production-smoke-test-db-1 Created 
+ Container zelta-production-smoke-test-redis-1 Created 
+ Container zelta-production-smoke-api-smoke-1 Creating 
+ Container zelta-production-smoke-api-smoke-1 Created 
+ Container zelta-production-smoke-test-redis-1 Starting 
+ Container zelta-production-smoke-test-db-1 Starting 
+ Container zelta-production-smoke-test-redis-1 Started 
+ Container zelta-production-smoke-test-db-1 Started 
+ Container zelta-production-smoke-test-db-1 Waiting 
+ Container zelta-production-smoke-test-redis-1 Waiting 
+ Container zelta-production-smoke-test-redis-1 Healthy 
+ Container zelta-production-smoke-test-db-1 Healthy 
+ Container zelta-production-smoke-api-smoke-1 Starting 
+ Container zelta-production-smoke-api-smoke-1 Started 
+ Container zelta-production-smoke-test-redis-1 Waiting 
+ Container zelta-production-smoke-api-smoke-1 Waiting 
+ Container zelta-production-smoke-test-db-1 Waiting 
+ Container zelta-production-smoke-test-db-1 Healthy 
+ Container zelta-production-smoke-test-redis-1 Healthy 
+ Container zelta-production-smoke-api-smoke-1 Healthy 

@@ -1,8 +1,8 @@
 {
   "base_revision": "1b50bdaefbea8587058ecdc86f71d60a19b15531",
   "mode": "Local isolated database/cache and fixture providers; no actual hosting or Supabase authentication",
-  "backend_tests": 115,
-  "production_image": "sha256:75b1ae038c68176db333af69b4640373033d6d1a24b89756827f98ae0b68d202",
+  "backend_tests": 118,
+  "production_image": "sha256:55f33429baad35b432a5adda0ca83cc03a9baa661cc5beb3e2c3bd8287bc3344",
   "source_sha256": {
     "backend/config.py": "6855e36287eefc573671170b42be7f72818477937723b2ee2872af9bf1432bae",
     "backend/auth.py": "22ce4b0433df1920f4d8c823bbd875b305b2814b2c555443ec82ffcbca45232f",
@@ -16,6 +16,9 @@
     "compose.test.yml": "2cb62e62316de34d2ddd2ffd19cc9c4ade650ab03ce621e89482bff43dbeff3d",
     "render.yaml": "fbf83ea84a8da962e2805beb46cbe10a39eff517b4af39f312bec2f02b76e496",
     "frontend/vercel.json": "e1d975d5aed6ad5a179d6e466a6b5bad8ce1fea91fda4137db05b351261a50f5",
-    ".github/workflows/checks.yml": "09bc6891f4174c512ba33e6d1ca2f881a35096b60fbf84b093915d1bdcbafd19"
-  }
+    ".github/workflows/checks.yml": "09bc6891f4174c512ba33e6d1ca2f881a35096b60fbf84b093915d1bdcbafd19",
+    "backend/migrations/005_backend_only_table_access.sql": "ceb7d59155d40b8acde3bb0e8cfbd0e24a3b1ddecdd4484270c0c15d875605fa",
+    "backend/tests/test_database_access.py": "9f23d0e9c3b36fee5b0a492269b2f8341029e1f636f519964edbf21503770b63"
+  },
+  "followup_base_revision": "14c71aeb5b16494017af79f4b3a8eeb30f87e3c8"
 }
