@@ -1,0 +1,124 @@
+ Container zelta-validation-test-redis-1 Running 
+ Container zelta-validation-test-db-1 Running 
+ Container zelta-validation-test-db-1 Waiting 
+ Container zelta-validation-test-redis-1 Waiting 
+ Container zelta-validation-test-db-1 Healthy 
+ Container zelta-validation-test-redis-1 Healthy 
+ Container zelta-validation-tests-run-0f43106eeb70 Creating 
+ Container zelta-validation-tests-run-0f43106eeb70 Created 
+/usr/local/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+Database tables initialised successfully.
+{
+  "rounds": [
+    {
+      "round": 1,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.969171000586357,
+      "p95_http_ms": 4.037107995827682,
+      "elapsed_seconds": 0.30039280200435314,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 1.6096875042421743,
+      "p95_http_ms": 2.984438993735239,
+      "elapsed_seconds": 0.18792383899562992,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.4018770054681227,
+      "p95_http_ms": 3.8726669881725684,
+      "elapsed_seconds": 0.2556104880059138,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 2.4480709980707616,
+      "p95_http_ms": 3.8724449987057596,
+      "elapsed_seconds": 0.2560763960063923,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.605397006846033,
+      "p95_http_ms": 3.998266998678446,
+      "elapsed_seconds": 0.2774849970010109,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 1.6169110022019595,
+      "p95_http_ms": 2.6798820035764948,
+      "elapsed_seconds": 0.1786089980014367,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    }
+  ],
+  "failures": []
+}

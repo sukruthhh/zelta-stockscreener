@@ -1,0 +1,16 @@
+{
+  "base_revision": "d4ab341885da6bd0ac1b6478dd7d69523fa4d5d7",
+  "branch": "codex/cache-freshness-metrics",
+  "python": "3.12.16",
+  "database": "PostgreSQL16",
+  "cache": "Redis7 isolated",
+  "source_sha256": {
+    "backend/cache_service.py": "55a26c395b7fad0aa32b9632ef62cae4b0fb38531243715dae460ecccc95fcad",
+    "backend/tests/test_cache_service.py": "9ad7ea9104886fff85c9956eb1ae956989e2ae568386c9612354c0cb4007ed85",
+    "backend/scripts/measure_cache.py": "3561df3a9f4658c1f22f0d64c265f7798c8758182a47c424779a2d057816c97a",
+    "compose.test.yml": "9c80c2ee740b1026606483f732353a00138f9e519614445eba21d43d1a9df154",
+    ".github/workflows/checks.yml": "c9def204ba55fbe90ca428d7c2156b0785fac1e8e27a88613f9542bec1b19461"
+  },
+  "measurements": "Fixture provider, real Redis and HTTP TestClient; not production traffic",
+  "test_count": 94
+}

@@ -13,6 +13,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test with isolated PostgreSQL
         run: docker compose -p zelta-validation -f compose.test.yml up --build --abort-on-container-exit --exit-code-from tests
+      - name: Replay cache workload with isolated Redis
+        run: |
+          mkdir -p "$RUNNER_TEMP/zelta-evidence"
+          docker compose -p zelta-validation -f compose.test.yml run --rm --volume "$RUNNER_TEMP/zelta-evidence:/evidence" -e ZELTA_SOURCE_REVISION="$GITHUB_SHA" tests python scripts/measure_cache.py --output /evidence/cache-replay.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cache-replay
+          path: ${{ runner.temp }}/zelta-evidence/
       - name: Remove test containers
         if: always()
         run: docker compose -p zelta-validation -f compose.test.yml down

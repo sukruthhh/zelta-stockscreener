@@ -1,11 +1,33 @@
 import os
 import json
-from datetime import datetime, time
+from datetime import datetime, time, timedelta, timezone
 from typing import Optional, Any
+from zoneinfo import ZoneInfo
 import redis
 from dotenv import load_dotenv
 
 load_dotenv()
+
+MARKET_TIMEZONE = ZoneInfo("America/New_York")
+
+
+def intraday_ttl_seconds(now: datetime | None = None) -> int:
+    """Bound cache residence using a conservative daily 04:00–16:00 New York window.
+
+    This is not an exchange calendar or a guarantee of upstream quote freshness.
+    Short TTLs also apply on weekends/holidays rather than extending stale entries.
+    """
+    current = now or datetime.now(timezone.utc)
+    if current.tzinfo is None:
+        raise ValueError("Cache policy requires a timezone-aware timestamp.")
+    local = current.astimezone(MARKET_TIMEZONE)
+    if time(4) <= local.time() < time(16):
+        return 15
+
+    next_date = local.date() if local.time() < time(4) else local.date() + timedelta(days=1)
+    next_active = datetime.combine(next_date, time(4), tzinfo=MARKET_TIMEZONE)
+    until_active = (next_active.astimezone(timezone.utc) - current.astimezone(timezone.utc)).total_seconds()
+    return max(1, min(43200, int(until_active)))
 
 
 class RedisCacheService:
@@ -44,17 +66,9 @@ class RedisCacheService:
         self.set_market_feed(key, data, ttl_seconds=15)
 
     def cache_intraday_ticker_smart(self, symbol: str, data: Any):
-        """Caches live data briefly during active hours, but locks it overnight."""
+        """Expire overnight entries by the next 04:00 New York boundary."""
         key = f"ticker:live:{symbol.upper()}"
-        current_time = datetime.now().time()
-
-        # Check if current time is outside normal premarket/market hours (4:00 AM - 4:00 PM EST)
-        if current_time > time(16, 0) or current_time < time(4, 0):
-            ttl = 43200  # Keep it cached for 12 hours overnight
-        else:
-            ttl = 15  # Keep it fluid for 15 seconds during active momentum swings
-
-        self.set_market_feed(key, data, ttl_seconds=ttl)
+        self.set_market_feed(key, data, ttl_seconds=intraday_ttl_seconds())
 
     def cache_historical_timeline(self, symbol: str, data: Any):
         """Historical data (EOD) changes daily. Cache for 1 hour (3600s)."""

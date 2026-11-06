@@ -1,5 +1,9 @@
 # Zelta engineering and product reference
 
+This records the first reliability checkpoint. See [the delivery plan](delivery-plan.md) for the
+subsequent cache-freshness milestone, current remaining work and measurement contracts. The user
+has since confirmed that no frontend/backend deployment exists yet.
+
 ## Objective and scope
 
 Make the existing product understandable and reliable enough for a family member to analyze a

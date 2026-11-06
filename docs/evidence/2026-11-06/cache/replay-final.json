@@ -1,0 +1,6128 @@
+{
+  "started_at": "2026-11-06T17:34:17.065767+00:00",
+  "python": "3.12.16",
+  "conditions": {
+    "endpoint": "GET /api/v1/test-ticker/{symbol}",
+    "http_transport": "in-process FastAPI TestClient (not network or browser)",
+    "redis": "real isolated Redis 7; no persisted data",
+    "market_data": "fixture closes; no artificial network delay; no live or paid provider calls",
+    "workload": "3 rounds, each with 100 uncached + 100 cached requests; 5 symbols repeated 20 times",
+    "cache_policy": "actual wall-clock policy, including cold misses in cached runs",
+    "source_revision": "d4ab341885da6bd0ac1b6478dd7d69523fa4d5d7+working-tree",
+    "limitations": "Designed repetition is not production demand. Latency excludes upstream network and browser polling."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.582545501354616,
+      "p95_http_ms": 4.203705000691116,
+      "elapsed_seconds": 0.28923387499526143,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 2.5544394957250915,
+      "p95_http_ms": 3.6148529907222837,
+      "elapsed_seconds": 0.2612071379990084,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.2971384969423525,
+      "p95_http_ms": 3.5031110019190237,
+      "elapsed_seconds": 0.24410666000039782,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 1.8899834976764396,
+      "p95_http_ms": 2.813286002492532,
+      "elapsed_seconds": 0.19884165399707854,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "requests": 100,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "upstream_fixture_calls": 100,
+      "median_http_ms": 2.1424894948722795,
+      "p95_http_ms": 3.100533998804167,
+      "elapsed_seconds": 0.22442422600579448,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "requests": 100,
+      "cache_hits": 95,
+      "cache_hit_rate": 0.95,
+      "upstream_fixture_calls": 5,
+      "median_http_ms": 1.653299004829023,
+      "p95_http_ms": 2.7534379914868623,
+      "elapsed_seconds": 0.18042675399919972,
+      "remaining_redis_ttls": [
+        15,
+        15,
+        15,
+        15,
+        15
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 14.742105995537713,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 4.466853002668358,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.475851990515366,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.266533007263206,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.733908000867814,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 4.206152007100172,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.6683060025097802,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.674501000205055,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.837744996417314,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.481677995296195,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 4.842961992835626,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.791716997511685,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.2684059988241643,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.6174549895804375,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.983697999501601,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.033772998605855,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.556945997639559,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.8254409990040585,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.413378009805456,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.6294080016668886,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.8039960054447874,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.853350004646927,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.342002000659704,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.968195996596478,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.319291001185775,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.2534699965035543,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.515854997909628,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.130705994204618,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.3241359886014834,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.444301004288718,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.7632449889788404,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.7611880030017346,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.6117010090965778,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9113629969069734,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.5296990061178803,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.3076819963753223,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.7854590114438906,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.498947007348761,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.04736900923308,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9171879976056516,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6381080058636144,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.2768010094296187,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3245410120580345,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.144728001439944,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8784040003083646,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8577790033305064,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9682759884744883,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.803212992148474,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9294360099593177,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.12440500035882,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.4133340048138052,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.5890230026561767,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.1182320051593706,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.512748003937304,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.0191580115351826,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9617700017988682,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9391999958315864,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.8184089896967635,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.2170720039866865,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.049731003353372,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.362279992667027,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.934775005793199,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3615810059709474,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0894600020255893,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.541888999985531,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.126381998299621,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.020726999035105,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7343810031889006,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.5207370015559718,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.962297988939099,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9558350031729788,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.2999659995548427,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.94873199891299,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 4.02301199210342,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.702482004882768,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.978535005240701,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.733482004259713,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.8271480007097125,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 4.203705000691116,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 4.559070002869703,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.4019930026261136,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.027161001227796,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.5669089993461967,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.0841580010019243,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.7539720031199977,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.436950002447702,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.825542000005953,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.919806996942498,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.8570739998249337,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.9971479962114245,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.6718110020738095,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.5349739919183776,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.5753800038946792,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.6612560031935573,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.192873002262786,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.344254000694491,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.0472060025203973,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5760680000530556,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.995325998403132,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "uncached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.9061850073048845,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.449941999861039,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.8663809973513708,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.3161929895868525,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.9910939920227975,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.7710650028893724,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0599879935616627,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.3974789946805686,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.0348820000654086,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 4.50220399943646,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.675059004104696,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.3138869873946533,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.7500140093034133,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.0601399921579286,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.4608790010679513,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.689642002223991,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.327417998458259,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.9285639902809635,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.464799996232614,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.231771999504417,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.6245729968650267,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.1754270021338016,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.583923011319712,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.3556890120962635,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.303849993040785,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.972444006241858,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8777949881041422,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.49827399966307,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.1916050027357414,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9999899959657341,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.4902459990698844,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7817609952762723,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.7526519988896325,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.653067000210285,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.4527259995229542,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.2169619953492656,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.434516998822801,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.491538009257056,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 4.278819003957324,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 6.682863997411914,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.7963230095338076,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.096349999192171,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.607149988762103,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5700370024424046,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.9181550091598183,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.1614430006593466,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8386400042800233,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.5948400105116889,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5533989974064752,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.4701629988849163,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.846312006819062,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0880569936707616,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.73532500048168,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.6222819976974279,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.015278994804248,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.6197530057979748,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8539580050855875,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.316878002602607,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.6148529907222837,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.8661230026045814,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.48004799161572,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.8695090004475787,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.555479994043708,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.192052997997962,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0547640015138313,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.6494409976294264,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.320411993423477,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.973753998754546,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.802578004775569,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.639199999975972,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.253685990581289,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0976719970349222,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.4415199916111305,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.946720996988006,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.9543020064011216,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.867981001851149,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.4252599939936772,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.3437359884846956,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.9059009937336668,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.359534992137924,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.670775997103192,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.8280560072744265,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.6905169943347573,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.9897340098395944,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.6802680038381368,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.679801997146569,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.425297007197514,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.7088189963251352,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.572430996224284,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0115880033699796,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.5264339928980917,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.216797001892701,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.5812599924393,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5531949941068888,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.236852000351064,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9112250010948628,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6205790016101673,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.709454008960165,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.0958160021109506,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.928421992692165,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 1,
+      "mode": "cached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.451651005889289,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.2896210032049567,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.1934920077910647,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.068916001007892,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.242419999674894,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9411949906498194,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7291989972582087,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.1567369878757745,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.664865012979135,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.4123809998854995,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9652400078484789,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8720140069490299,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.8720459959004074,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.418189997319132,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.5626210117479786,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.102514001308009,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9708600011654198,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.2348229977069423,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.0713539997814223,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.216890992713161,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.1768410078948364,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8083059985656291,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.4468359877355397,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.4697590086143464,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.6678319952916354,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.4447520079556853,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6239969991147518,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.945379000972025,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.935823995154351,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.3519550052005798,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.095948002533987,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9958850025432184,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8779620004352182,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6900450029643252,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.7869279981823638,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.1967229986330494,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.8745669987984,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.5916930026141927,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3916290083434433,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.3940819955896586,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.325983004993759,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.2946800017962232,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.9028230055700988,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.1554329907521605,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0710210083052516,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.299596992088482,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.364275002037175,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.1301580127328634,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.9093240116490051,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.075584008707665,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.372642993577756,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.2834940027678385,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.3981179983820766,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.31357199663762,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.41153800743632,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.3831819999031723,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.5024930073414,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.6999599979026243,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6693849940784276,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.2944899974390864,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.807812998071313,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.1953840041533113,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.518933004466817,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.9019369976595044,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.628122005262412,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.2275890078162774,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.1880419953959063,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.249857992865145,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.4333189940080047,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.839724998921156,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.938502002507448,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7948930073762313,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.9928449948783964,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.147914001601748,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.657062989077531,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 4.064690001541749,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.2440879984060302,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.160578005714342,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.2204319975571707,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1731129963882267,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.4115790001815185,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.493700991384685,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.0784809932811186,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6099830138264224,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.330165996681899,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.463309996528551,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0521230035228655,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.8414909940911457,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6436670013936237,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0611530053429306,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8160010076826438,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8682499940041453,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.3943150008562952,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.1746720012743026,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.5031110019190237,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.8663249977398664,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.288837989908643,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.0074939966434613,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.6132250020746142,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.7438920040149242,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "uncached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.191250998293981,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.63202800124418,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.3395150055876,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.4282819940708578,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0463949913391843,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.552234989707358,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5524109912803397,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8492710078135133,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.9510559941409156,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.509795012883842,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.4959269940154627,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.2594059992115945,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.108154003508389,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7598640115465969,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.5168519894359633,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.642289997311309,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.859099997091107,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8630209960974753,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.6726400062907487,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.8355060019530356,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.6007149970391765,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5000590065028518,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.2448350025806576,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.369175995932892,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.3576640048995614,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.1715089931385592,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.1876609933096915,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8402540008537471,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.8279090038267896,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.2477999882539734,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8875849928008392,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.616416993783787,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.5992080006981269,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.396088995737955,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1117839933140203,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9735560053959489,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.336983001441695,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.32690000848379,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5620439992053434,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.586382004665211,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.2969569981796667,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7361149986973032,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.813286002492532,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6333389978390187,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.492832994903438,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.7821709954878315,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.1263700036797673,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.763210995704867,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.2421939900377765,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.1588990018935874,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.7538669926580042,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.3426779914880171,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.332446001470089,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.4594599924748763,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.3422799966065213,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.464518005377613,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.158687999122776,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8930509977508336,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.3818619918311015,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.5857380058150738,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.211768995039165,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7975799894193187,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.0516919903457165,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5670630091335624,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.7307489906670526,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.356885001063347,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8801560072461143,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.89238200255204,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8704149988479912,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.420750999590382,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8181079940404743,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.1090119989821687,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.097126009175554,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.9476239976938814,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.731524989940226,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9068620022153482,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0445389964152128,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.892873002565466,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.9415919998427853,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.899352006148547,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9769609934883192,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6274119989247993,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.392816993757151,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.492629002314061,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.4913299964973703,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.2345909965224564,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7593380073085427,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8168399983551353,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.4345670060720295,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.720737011055462,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.542696001706645,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5703579992987216,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.545845007058233,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7258019943255931,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.9515740025090054,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.8807500057155266,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8053410021821037,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9949249981436878,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7384149978170171,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.3736950097372755,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 2,
+      "mode": "cached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.877242000773549,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.4335449998034164,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8638799956534058,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5321989922085777,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9648199959192425,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.7348010005662218,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9189390004612505,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.879756004200317,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3121909907786176,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.341194005566649,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.666169995791279,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.249119002954103,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.0867209968855605,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7556750099174678,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.572394001414068,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.6460790066048503,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.4209389957832173,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.4145920033333823,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5706749982200563,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.6043310024542734,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.6619510133750737,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.7755150038283318,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9429230014793575,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.768688001902774,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9468739919830114,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.2231379989534616,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.145720995031297,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.2449069985887036,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.730418996885419,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.8553949921624735,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9846960058202967,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9764489989029244,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.6702269969973713,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.4621179909445345,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1316049969755113,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.362935003475286,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.9080690001137555,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.905215005739592,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3644660104764625,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.344897002330981,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.0667560058645904,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.847796000423841,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.1827180025866255,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.3248770012287423,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.927504999912344,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8759039958240464,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.7325779917882755,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.192421001382172,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.112942995154299,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1392579947132617,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.225474003353156,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.354844007641077,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.24068301031366,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.191754989326,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0085199939785525,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.7079949979670346,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.7780420059571043,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.1711560111725703,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.6716759894043207,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.481610994436778,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.5682929990580305,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 3.2813930010888726,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.2046929952921346,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8508999928599223,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1004099980928004,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8920440052170306,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6314370004693046,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.066232991637662,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7245140043087304,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.100533998804167,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.099242996540852,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.6627670013112947,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.6123809948330745,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.0007109889993444,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.9487630090443417,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.445798003464006,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8573119887150824,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.079409998259507,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.2482090027770028,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.148229003068991,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.221513001131825,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.667813008883968,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 3.507503992295824,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.264865004690364,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.1292929886840284,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.0265569910407066,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8644899973878637,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9486149976728484,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.6796529962448403,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0659049914684147,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.7792949947761372,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8449890048941597,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.4228580005001277,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.949313998920843,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.693733996944502,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.77559899748303,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.711195000098087,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.068558009341359,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 3.0310589936561882,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.3321040062000975,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "uncached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.810762012610212,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 0,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8232650036225095,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 1,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.9373029936105013,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 2,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.5492190034128726,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 3,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.7534379914868623,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 4,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.965668998309411,
+      "status": 200,
+      "source": "live_api",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 5,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5925210027489811,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 6,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.5048350032884628,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 7,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7385940009262413,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 8,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.507115001208149,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 9,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.5710869920440018,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 10,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5021980070741847,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 11,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.556873001391068,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 12,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5738189977128059,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 13,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.5003940099850297,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 14,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.1603249915642664,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 15,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5181339986156672,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 16,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.8014980014413595,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 17,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8034870008705184,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 18,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.6669019969413057,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 19,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.3752410013694316,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 20,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.6287870093947276,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 21,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.5557250007987022,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 22,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8109600059688091,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 23,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.4478930097538978,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 24,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.435982994735241,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 25,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.4806370018050075,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 26,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.6506050014868379,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 27,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.640468995901756,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 28,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.7210009973496199,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 29,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.139101008651778,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 30,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.7945139989024028,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 31,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.3691620115423575,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 32,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.7530200022738427,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 33,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.587768991361372,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 34,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.594929999555461,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 35,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.3972289889352396,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 36,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.4004900003783405,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 37,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.4033960032975301,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 38,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.2610260057263076,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 39,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.8360940011916682,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 40,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.9306269969092682,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 41,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.868749997811392,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 42,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.376111995545216,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 43,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.229481004178524,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 44,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 2.109995999489911,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 45,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8075530097121373,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 46,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.03075900208205,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 47,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8933379906229675,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 48,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.774946998921223,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 49,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 3.3633499988354743,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 50,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.8589080029632896,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 51,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.1882730070501566,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 52,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 2.4218469916377217,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 53,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.4898619992891327,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 54,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.1810040014097467,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 55,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.1107320024166256,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 56,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.3040229969192296,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 57,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.4779579942114651,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 58,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0706490031443536,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 59,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.2902050075354055,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 60,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.730382009758614,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 61,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.450424999347888,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 62,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5295409975806251,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 63,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.9588830036809668,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 64,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.3610969908768311,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 65,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.5668339910916984,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 66,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.3272390060592443,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 67,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.58686499344185,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 68,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 3.180723011610098,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 69,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.9526039977790788,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 70,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.8974660051753744,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 71,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.6411960095865652,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 72,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.7118260002462193,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 73,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 2.0765640074387193,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 74,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.972239013412036,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 75,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.8980989882256836,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 76,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.6559930081712082,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 77,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.3784159964416176,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 78,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.2821260024793446,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 79,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.2688249989878386,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 80,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.4171609946060926,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 81,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.452133001293987,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 82,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.5201439964585006,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 83,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.4848790015093982,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 84,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.4478509983746335,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 85,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.7605070024728775,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 86,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 2.903350003180094,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 87,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.758615006110631,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 88,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.2900000001536682,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 89,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.3963539968244731,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 90,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 1.2808419996872544,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 91,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.4950690092518926,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 92,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.8831030029105023,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 93,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.6245300066657364,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 94,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.7578369879629463,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 95,
+      "ticker": "ZBENCHA",
+      "elapsed_ms": 2.0854979957221076,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 96,
+      "ticker": "ZBENCHB",
+      "elapsed_ms": 1.2599559995578602,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 97,
+      "ticker": "ZBENCHC",
+      "elapsed_ms": 1.3183230039430782,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 98,
+      "ticker": "ZBENCHD",
+      "elapsed_ms": 1.3507840048987418,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    },
+    {
+      "round": 3,
+      "mode": "cached",
+      "index": 99,
+      "ticker": "ZBENCHE",
+      "elapsed_ms": 1.1543759901542217,
+      "status": 200,
+      "source": "cache",
+      "payload_correct": true
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-06T17:34:18.511264+00:00"
+}

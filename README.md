@@ -8,6 +8,8 @@ See [the engineering and product reference](docs/engineering-product-reference.m
 capabilities, known release gaps, measurement evidence, and resume claims. A deployment recipe
 below is not proof of a running deployment. The historical agent design is superseded by the
 deterministic analysis path; news ingestion still uses OpenAI embeddings when configured.
+See [the delivery and measurement plan](docs/delivery-plan.md) for the remaining release work,
+metric definitions, the cache-freshness fix, and controlled upstream-call measurements.
 
 Run backend checks against a separate temporary database (no API keys required):
 
@@ -16,8 +18,9 @@ docker compose -p zelta-validation -f compose.test.yml up --build --abort-on-con
 docker compose -p zelta-validation -f compose.test.yml down
 ```
 
-The test database has no host port or persistent volume. Test providers and identity are fixtures;
-PostgreSQL migrations and HTTP persistence are real. GitHub Actions runs these checks too.
+The test database and Redis have no host ports or persistent data. Test providers and identity are
+fixtures; PostgreSQL migrations, Redis operations, and HTTP persistence are real. GitHub Actions
+runs these checks and retains the cache replay as an artifact.
 Frontend checks: `npm ci`, `npm run lint`, and `npm run build -- --webpack` from `frontend/`.
 The webpack option avoids a reproduced local Windows Turbopack CSS-worker crash.
 
@@ -116,7 +119,7 @@ The API returns a `source` field on cache-aware endpoints so you can tell whethe
 
 | Endpoint | Cache key pattern | TTL | Notes |
 |---|---|---|---|
-| `GET /api/v1/test-ticker/{symbol}` | `ticker:live:{symbol}` | 15s during market hours / 12h overnight | Smart intraday cache for live price checks |
+| `GET /api/v1/test-ticker/{symbol}` | `ticker:live:{symbol}` | 15s from 04:00–16:00 New York; up to 12h otherwise, expiring by the next 04:00 | Conservative daily window, DST-aware; cache residence is not upstream quote age |
 | `GET /api/v1/scan/history/{symbol}` | `ticker:history:{symbol}` | 1h | Historical metric timeline cached between refreshes |
 | `POST /api/v1/scan/morning-screener` | `screener:morning:matched` | 15m | Batch alert payload cached after scan |
 | `POST /api/v1/harvest/{ticker}` | `news:feed:{symbol}` | 30m | News ingestion result cached to avoid duplicate fetches |

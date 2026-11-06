@@ -12,19 +12,30 @@ services:
       interval: 2s
       timeout: 3s
       retries: 20
+  test-redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
   tests:
     build:
       context: ./backend
       dockerfile: Dockerfile.test
     environment:
       POSTGRES_URL: postgresql://zelta_test:test-only@test-db:5432/zelta_test
-      REDIS_URL: redis://localhost:6379/0
+      REDIS_URL: redis://test-redis:6379/0
       FINNHUB_API_KEY: ""
       OPENAI_API_KEY: ""
       SUPABASE_URL: ""
       PYTHONPATH: /app
+      ZELTA_ISOLATED_TEST: "1"
     volumes:
       - ./backend:/app:ro
     depends_on:
       test-db:
+        condition: service_healthy
+      test-redis:
         condition: service_healthy
