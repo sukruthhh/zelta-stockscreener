@@ -273,7 +273,7 @@ Reliability:
 
 July 16th - 18th:
 
-We replaced the three-agent workflow as the core analysis strategy with a deterministic engine that does not require local AI or a managed AI API. It evaluates moving averages, five-day movement, RSI, trading volume, volatility, and ATR to produce an explainable assessment.
+Replaced the three-agent workflow as the core analysis strategy with a deterministic engine that does not require local AI or a managed AI API. It evaluates moving averages, five-day movement, RSI, trading volume, volatility, and ATR to produce an explainable assessment.
 
 Each result now contains:
 
