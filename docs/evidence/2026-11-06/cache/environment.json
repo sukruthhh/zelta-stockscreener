@@ -1,6 +1,5 @@
 {
   "base_revision": "d4ab341885da6bd0ac1b6478dd7d69523fa4d5d7",
-  "branch": "codex/cache-freshness-metrics",
   "python": "3.12.16",
   "database": "PostgreSQL16",
   "cache": "Redis7 isolated",

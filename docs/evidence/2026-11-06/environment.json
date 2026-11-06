@@ -1,7 +1,6 @@
 {
   "date": "2026-11-06",
   "base_revision": "bcfdbaa3b8872ffbfd8d0a76517dc2bd7b67568a",
-  "branch": "codex/reliable-analysis",
   "host": "Windows",
   "node": "26.3.0",
   "npm": "11.17.0",

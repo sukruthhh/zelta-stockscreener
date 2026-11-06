@@ -4,3 +4,8 @@ __pycache__/
 *.pyc
 
 .pytest_cache/
+
+# Local coding-assistant configuration
+.codex/
+AGENTS.md
+CLAUDE.md
