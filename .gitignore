@@ -9,3 +9,6 @@ __pycache__/
 .codex/
 AGENTS.md
 CLAUDE.md
+
+# Local downloaded market snapshots; retain manifests/results in docs/evidence.
+backend/data/local/

@@ -1,0 +1,51 @@
+ Container zelta-validation-test-redis-1 Running 
+ Container zelta-validation-test-db-1 Running 
+ Container zelta-validation-test-redis-1 Waiting 
+ Container zelta-validation-test-db-1 Waiting 
+ Container zelta-validation-test-redis-1 Healthy 
+ Container zelta-validation-test-db-1 Healthy 
+ Container zelta-validation-tests-run-2c831acbd3d3 Creating 
+ Container zelta-validation-tests-run-2c831acbd3d3 Created 
+{
+  "rows_per_ticker": {
+    "AAPL": 502,
+    "MSFT": 502,
+    "SPY": 502
+  },
+  "download_failures": [],
+  "summary": {
+    "candidate_count": 273,
+    "eligible_count": 181,
+    "directional_call_count": 197,
+    "directional_coverage": 0.7216117216117216,
+    "eligible_fraction": 0.663003663003663,
+    "exclusions": {
+      "neutral_no_directional_call": 73,
+      "corporate_action_in_horizon": 16,
+      "target_close_missing": 3
+    },
+    "strategies": {
+      "model": {
+        "correct": 108,
+        "sample_size": 181,
+        "hit_rate": 0.5966850828729282
+      },
+      "momentum": {
+        "correct": 100,
+        "sample_size": 181,
+        "hit_rate": 0.5524861878453039
+      },
+      "always_up": {
+        "correct": 108,
+        "sample_size": 181,
+        "hit_rate": 0.5966850828729282
+      },
+      "random": {
+        "correct": 88,
+        "sample_size": 181,
+        "hit_rate": 0.4861878453038674
+      }
+    },
+    "interpretation": "Descriptive retrospective diagnostics, not trading returns, calibrated confidence, or statistical evidence of superiority. Overlapping/correlated observations and selected symbols limit generalization."
+  }
+}

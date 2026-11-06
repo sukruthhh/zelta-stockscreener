@@ -94,6 +94,9 @@ export interface Watchlist {
 }
 
 export interface PerformanceSummary {
+  evaluation_version: string;
+  legacy_evaluated_count: number;
+  legacy_pending_count: number;
   evaluated_count: number;
   pending_count: number;
   correct_count: number;

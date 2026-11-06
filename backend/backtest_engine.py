@@ -1,38 +1,27 @@
-"""Grade predictions whose 5-day evaluation window has arrived against what
-the stock actually did, using real yfinance closes.
+"""Grade eligible saved calls against dated, completed yfinance sessions.
 
-The `predictions` table has carried target_eval_date, actual_close_price,
-absolute_error_pct, and is_correct_direction columns since this project's
-July migrations -- but nothing ever populated them. This is that missing
-piece, built exactly the way this project's own early planning notes said
-to build it: "Phase 1: a standalone script, run manually, get the queries
-and the accuracy math right before automating it."
-
-Run it manually:
-
-    cd backend
-    python backtest_engine.py
-
-Or on a schedule once a day (a Render Cron Job, a plain OS cron entry, a
-GitHub Actions scheduled workflow -- anything that can run one command).
-It's idempotent-ish: predictions are only graded once (is_evaluated flips
-to true), so running it more often than needed just does no extra work.
+Targets use five calendar days from generation in New York. Wait until a session
+is complete and select the first provided close on/after the target, bounded to
+seven further days. Run manually from backend: python backtest_engine.py.
 """
 
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
+from math import isfinite
 from typing import Callable
 
 import yfinance as yf
 
 from database import fetch_due_predictions, record_backtest_result
+from config import get_settings
+from evaluation_policy import CloseObservation, EVALUATION_VERSION, MAX_SESSION_DELAY_DAYS, market_today
 
 logger = logging.getLogger(__name__)
 
-PriceFetcher = Callable[[str, date], float | None]
+PriceFetcher = Callable[[str, date], CloseObservation | None]
 
 
 @dataclass(frozen=True)
@@ -40,69 +29,90 @@ class GradedPrediction:
     prediction_id: int
     ticker: str
     actual_close_price: float
+    actual_close_date: date
     absolute_error_pct: float
     is_correct_direction: bool
+    evaluation_version: str = EVALUATION_VERSION
 
 
-def _default_price_fetcher(ticker: str, as_of: date) -> float | None:
-    """Closing price at or shortly after `as_of` (falls back to the most
-    recent available close if `as_of` hasn't traded yet, e.g. it's a
-    weekend/holiday, or the script runs slightly before market close)."""
-    history = yf.Ticker(ticker).history(start=as_of.isoformat(), period="5d")
-    if history.empty:
-        history = yf.Ticker(ticker).history(period="10d")
+def _default_price_fetcher(ticker: str, as_of: date) -> CloseObservation | None:
+    """First provided completed session on/after target, at most seven days later."""
+    today = market_today()
+    if as_of >= today:
+        return None
+    end = min(today, as_of + timedelta(days=MAX_SESSION_DELAY_DAYS + 1))
+    history = yf.Ticker(ticker).history(
+        start=as_of.isoformat(), end=end.isoformat(), auto_adjust=True,
+        timeout=get_settings().market_data_timeout_seconds,
+    )
     if history.empty:
         return None
-    return float(history["Close"].iloc[-1])
+    for timestamp, row in history.sort_index().iterrows():
+        session = timestamp.date()
+        if as_of <= session < end:
+            price = float(row["Close"])
+            return CloseObservation(session, price) if isfinite(price) and price > 0 else None
+    return None
 
 
-def grade_prediction(prediction: dict, *, fetch_price: PriceFetcher) -> GradedPrediction | None:
+def grade_prediction(prediction: dict, *, fetch_price: PriceFetcher, as_of: date | None = None) -> GradedPrediction | None:
     """Returns None (rather than raising) when market data isn't available
     yet -- the prediction is simply left unevaluated and picked up on a
     later run, instead of the whole batch failing over one bad ticker."""
-    actual_close_price = fetch_price(prediction["ticker"], prediction["target_eval_date"])
-    if actual_close_price is None:
-        logger.warning(
-            "No market data yet for %s on %s; prediction %s stays unevaluated.",
-            prediction["ticker"],
-            prediction["target_eval_date"],
-            prediction["id"],
-        )
-        return None
-
     current_price = float(prediction["current_price"])
     predicted_price = float(prediction["predicted_price"])
+    if not all(isfinite(value) and value > 0 for value in (current_price, predicted_price)) or predicted_price == current_price:
+        return None
+    target = prediction["target_eval_date"]
+    today = as_of or market_today()
+    if target >= today:
+        return None
+    observation = fetch_price(prediction["ticker"], target)
+    if not isinstance(observation, CloseObservation):
+        return None
+    if not target <= observation.session_date <= target + timedelta(days=MAX_SESSION_DELAY_DAYS) or observation.session_date >= today:
+        return None
+    actual_close_price = observation.price
+    if not isfinite(actual_close_price) or actual_close_price <= 0:
+        return None
 
     # Error is expressed as a percentage of the price at prediction time,
     # not of the (possibly near-zero) predicted move -- that keeps the
     # metric stable and comparable across tickers of very different prices.
     absolute_error_pct = round(abs(actual_close_price - predicted_price) / current_price * 100, 2)
-    predicted_up = predicted_price > current_price
-    actual_up = actual_close_price > current_price
 
     return GradedPrediction(
         prediction_id=prediction["id"],
         ticker=prediction["ticker"],
         actual_close_price=actual_close_price,
+        actual_close_date=observation.session_date,
         absolute_error_pct=absolute_error_pct,
-        is_correct_direction=predicted_up == actual_up,
+        is_correct_direction=(predicted_price - current_price) * (actual_close_price - current_price) > 0,
     )
 
 
 def run(*, fetch_price: PriceFetcher = _default_price_fetcher, as_of: date | None = None) -> list[GradedPrediction]:
-    due = fetch_due_predictions(as_of=as_of or date.today())
+    today = as_of or market_today()
+    due = fetch_due_predictions(as_of=today)
     graded: list[GradedPrediction] = []
     for prediction in due:
-        result = grade_prediction(prediction, fetch_price=fetch_price)
+        try:
+            result = grade_prediction(prediction, fetch_price=fetch_price, as_of=today)
+        except Exception:
+            logger.exception("Prediction %s could not be graded; continuing batch.", prediction["id"])
+            continue
         if result is None:
             continue
-        record_backtest_result(
+        saved = record_backtest_result(
             result.prediction_id,
             actual_close_price=result.actual_close_price,
+            actual_close_date=result.actual_close_date,
+            evaluation_version=result.evaluation_version,
             absolute_error_pct=result.absolute_error_pct,
             is_correct_direction=result.is_correct_direction,
         )
-        graded.append(result)
+        if saved:
+            graded.append(result)
     return graded
 
 

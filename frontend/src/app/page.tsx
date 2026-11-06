@@ -150,7 +150,7 @@ function PerformanceStrip() {
   if (summary.evaluated_count === 0) {
     return (
       <div className="px-4 py-2 text-xs text-[#4b5563] border-b border-[#2a2d35]">
-        No predictions have reached their 5-day evaluation window yet.
+        No predictions have been graded under the current evaluation policy yet.
       </div>
     );
   }
@@ -158,13 +158,13 @@ function PerformanceStrip() {
   return (
     <div className="flex items-center gap-4 px-4 py-2 text-xs border-b border-[#2a2d35] overflow-x-auto whitespace-nowrap">
       <span className="text-[#6b7280]">
-        Backtested hit rate:{" "}
+        Directional hit rate:{" "}
         <span className="text-[#e2e4ea] font-medium">
           {summary.hit_rate !== null ? `${(summary.hit_rate * 100).toFixed(0)}%` : "--"}
         </span>
       </span>
-      <span className="text-[#6b7280]">
-        Avg. error:{" "}
+      <span className="text-[#6b7280]" title="Average distance from the ATR risk bound as a percentage of entry price; not a price forecast.">
+        Risk-bound distance:{" "}
         <span className="text-[#e2e4ea] font-medium">
           {summary.avg_absolute_error_pct !== null
             ? `${summary.avg_absolute_error_pct.toFixed(1)}%`

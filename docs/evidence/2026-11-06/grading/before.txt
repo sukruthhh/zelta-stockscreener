@@ -1,0 +1,164 @@
+ Network zelta-validation_default Creating 
+ Network zelta-validation_default Created 
+ Container zelta-validation-test-db-1 Creating 
+ Container zelta-validation-test-redis-1 Creating 
+ Container zelta-validation-test-db-1 Created 
+ Container zelta-validation-test-redis-1 Created 
+ Container zelta-validation-test-redis-1 Starting 
+ Container zelta-validation-test-db-1 Starting 
+ Container zelta-validation-test-redis-1 Started 
+ Container zelta-validation-test-db-1 Started 
+ Container zelta-validation-test-db-1 Waiting 
+ Container zelta-validation-test-redis-1 Waiting 
+ Container zelta-validation-test-redis-1 Healthy 
+ Container zelta-validation-test-db-1 Healthy 
+ Container zelta-validation-tests-run-7dfdb5957b3d Creating 
+ Container zelta-validation-tests-run-7dfdb5957b3d Created 
+FFFFFFF                                                                  [100%]
+=================================== FAILURES ===================================
+_________ test_fetch_uses_first_target_session_not_last_returned_close _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761b40de0230>
+
+    def test_fetch_uses_first_target_session_not_last_returned_close(monkeypatch):
+        patch_history(monkeypatch, [close_frame(["2024-01-02", "2024-01-03", "2024-01-08"], [101, 95, 999])])
+        result = engine._default_price_fetcher("AAPL", date(2024, 1, 2))
+>       assert close_value(result) == 101
+E       assert 999.0 == 101
+E        +  where 999.0 = close_value(999.0)
+
+tests/test_grading_regressions.py:32: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Database tables initialised successfully.
+____ test_empty_target_window_does_not_fall_back_to_recent_unrelated_prices ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761b4040af00>
+
+    def test_empty_target_window_does_not_fall_back_to_recent_unrelated_prices(monkeypatch):
+        calls = patch_history(monkeypatch, [pd.DataFrame(), close_frame(["2026-01-01"], [999])])
+>       assert engine._default_price_fetcher("AAPL", date(2024, 1, 2)) is None
+E       AssertionError: assert 999.0 is None
+E        +  where 999.0 = <function _default_price_fetcher at 0x761b41619f80>('AAPL', datetime.date(2024, 1, 2))
+E        +    where <function _default_price_fetcher at 0x761b41619f80> = engine._default_price_fetcher
+E        +    and   datetime.date(2024, 1, 2) = date(2024, 1, 2)
+
+tests/test_grading_regressions.py:37: AssertionError
+______________ test_fetch_rejects_rows_outside_the_target_window _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761b40409700>
+
+    def test_fetch_rejects_rows_outside_the_target_window(monkeypatch):
+        patch_history(monkeypatch, [close_frame(["2023-12-29", "2024-02-01"], [10, 999])])
+>       assert engine._default_price_fetcher("AAPL", date(2024, 1, 2)) is None
+E       AssertionError: assert 999.0 is None
+E        +  where 999.0 = <function _default_price_fetcher at 0x761b41619f80>('AAPL', datetime.date(2024, 1, 2))
+E        +    where <function _default_price_fetcher at 0x761b41619f80> = engine._default_price_fetcher
+E        +    and   datetime.date(2024, 1, 2) = date(2024, 1, 2)
+
+tests/test_grading_regressions.py:43: AssertionError
+____________ test_today_is_not_treated_as_a_completed_daily_session ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761b4040a2a0>
+
+    def test_today_is_not_treated_as_a_completed_daily_session(monkeypatch):
+        today = engine.date.today()
+        patch_history(monkeypatch, [close_frame([today.isoformat()], [999])])
+>       assert engine._default_price_fetcher("AAPL", today) is None
+E       AssertionError: assert 999.0 is None
+E        +  where 999.0 = <function _default_price_fetcher at 0x761b41619f80>('AAPL', datetime.date(2026, 11, 6))
+E        +    where <function _default_price_fetcher at 0x761b41619f80> = engine._default_price_fetcher
+
+tests/test_grading_regressions.py:49: AssertionError
+______________ test_unchanged_price_is_not_a_correct_bearish_call ______________
+
+    def test_unchanged_price_is_not_a_correct_bearish_call():
+        prediction = {"id": 1, "ticker": "AAPL", "current_price": 100, "predicted_price": 90, "target_eval_date": date(2024, 1, 2)}
+        result = engine.grade_prediction(prediction, fetch_price=lambda *args: 100)
+        assert result is not None
+>       assert result.is_correct_direction is False
+E       AssertionError: assert True is False
+E        +  where True = GradedPrediction(prediction_id=1, ticker='AAPL', actual_close_price=100, absolute_error_pct=10.0, is_correct_direction=True).is_correct_direction
+
+tests/test_grading_regressions.py:56: AssertionError
+______________________ test_bad_entry_price_is_not_graded ______________________
+
+    def test_bad_entry_price_is_not_graded():
+        prediction = {"id": 1, "ticker": "AAPL", "current_price": 0, "predicted_price": 90, "target_eval_date": date(2024, 1, 2)}
+>       assert engine.grade_prediction(prediction, fetch_price=lambda *args: 100) is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_grading_regressions.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+prediction = {'current_price': 0, 'id': 1, 'predicted_price': 90, 'target_eval_date': datetime.date(2024, 1, 2), ...}
+
+    def grade_prediction(prediction: dict, *, fetch_price: PriceFetcher) -> GradedPrediction | None:
+        """Returns None (rather than raising) when market data isn't available
+        yet -- the prediction is simply left unevaluated and picked up on a
+        later run, instead of the whole batch failing over one bad ticker."""
+        actual_close_price = fetch_price(prediction["ticker"], prediction["target_eval_date"])
+        if actual_close_price is None:
+            logger.warning(
+                "No market data yet for %s on %s; prediction %s stays unevaluated.",
+                prediction["ticker"],
+                prediction["target_eval_date"],
+                prediction["id"],
+            )
+            return None
+    
+        current_price = float(prediction["current_price"])
+        predicted_price = float(prediction["predicted_price"])
+    
+        # Error is expressed as a percentage of the price at prediction time,
+        # not of the (possibly near-zero) predicted move -- that keeps the
+        # metric stable and comparable across tickers of very different prices.
+>       absolute_error_pct = round(abs(actual_close_price - predicted_price) / current_price * 100, 2)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: float division by zero
+
+backtest_engine.py:79: ZeroDivisionError
+________ test_one_provider_failure_does_not_abort_the_rest_of_the_batch ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761b40bae270>
+
+    def test_one_provider_failure_does_not_abort_the_rest_of_the_batch(monkeypatch):
+        predictions = [dict(id=i, ticker=ticker, current_price=100, predicted_price=110, target_eval_date=date(2024, 1, 2)) for i, ticker in [(1, "BAD"), (2, "GOOD")]]
+        monkeypatch.setattr(engine, "fetch_due_predictions", lambda **kwargs: predictions)
+        monkeypatch.setattr(engine, "record_backtest_result", lambda *args, **kwargs: None)
+    
+        def fetch(ticker, target):
+            if ticker == "BAD":
+                raise RuntimeError("provider unavailable")
+            return 110
+    
+>       assert [row.prediction_id for row in engine.run(fetch_price=fetch)] == [2]
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_grading_regressions.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+backtest_engine.py:96: in run
+    result = grade_prediction(prediction, fetch_price=fetch_price)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backtest_engine.py:63: in grade_prediction
+    actual_close_price = fetch_price(prediction["ticker"], prediction["target_eval_date"])
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ticker = 'BAD', target = datetime.date(2024, 1, 2)
+
+    def fetch(ticker, target):
+        if ticker == "BAD":
+>           raise RuntimeError("provider unavailable")
+E           RuntimeError: provider unavailable
+
+tests/test_grading_regressions.py:71: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/test_grading_regressions.py::test_fetch_uses_first_target_session_not_last_returned_close
+FAILED tests/test_grading_regressions.py::test_empty_target_window_does_not_fall_back_to_recent_unrelated_prices
+FAILED tests/test_grading_regressions.py::test_fetch_rejects_rows_outside_the_target_window
+FAILED tests/test_grading_regressions.py::test_today_is_not_treated_as_a_completed_daily_session
+FAILED tests/test_grading_regressions.py::test_unchanged_price_is_not_a_correct_bearish_call
+FAILED tests/test_grading_regressions.py::test_bad_entry_price_is_not_graded
+FAILED tests/test_grading_regressions.py::test_one_provider_failure_does_not_abort_the_rest_of_the_batch
+7 failed in 1.51s
+

@@ -1,5 +1,4 @@
 import json
-from datetime import datetime, timedelta, timezone
 from uuid import UUID, uuid4
 
 import psycopg2
@@ -8,6 +7,7 @@ from psycopg2.extras import Json, RealDictCursor
 from analysis_models import AnalysisResult
 from config import get_settings
 from domain import AnalysisJobStatus, validate_analysis_job_transition
+from evaluation_policy import EVALUATION_VERSION, target_date
 
 
 def _connection():
@@ -183,7 +183,7 @@ def save_analysis_result(
     """Persist a completed AnalysisResult so it can be read back by
     get_analysis_job and later graded by backtest_engine.py."""
     predicted_price, stop_loss = _directional_levels(result)
-    target_eval_date = (datetime.now(timezone.utc) + timedelta(days=5)).date()
+    target_eval_date = target_date(result.generated_at)
 
     with _connection() as connection, connection.cursor() as cursor:
         cursor.execute(
@@ -193,9 +193,9 @@ def save_analysis_result(
                 volume_spike_ratio, atr_14, final_bias, confidence_score,
                 calculated_stop_loss, risk_rationale, model_version, result_status,
                 source_evidence, warnings, result_payload, input_data_timestamp,
-                target_eval_date
+                target_eval_date, evaluation_version
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id
             """,
             (
@@ -217,6 +217,7 @@ def save_analysis_result(
                 Json(json.loads(result.model_dump_json())),
                 result.data_timestamp,
                 target_eval_date,
+                EVALUATION_VERSION,
             ),
         )
         return cursor.fetchone()[0]

@@ -12,6 +12,8 @@ See [the delivery and measurement plan](docs/delivery-plan.md) for the remaining
 metric definitions, the cache-freshness fix, and controlled upstream-call measurements.
 For the first hosted release, follow [the deployment guide](docs/deploy.md). The initial
 configuration uses technical-only analysis and disables diagnostic routes.
+Backend measurement can proceed independently: [grading and historical evaluation](docs/backend-evaluation.md)
+records the corrected evaluation policy, real-data baseline comparisons, and their limitations.
 
 Run backend checks against a separate temporary database (no API keys required):
 

@@ -521,12 +521,11 @@ async def get_all_predictions():
 @app.get(
     "/api/v1/predictions/performance",
     tags=["analysis"],
-    summary="Backtested accuracy of past predictions",
+    summary="Directional grading under the current evaluation policy",
     description=(
-        "Aggregates every prediction backtest_engine.py has graded: hit-rate "
-        "(how often the directional call was right) and average absolute "
-        "error, plus how many predictions are still pending their 5-day "
-        "evaluation window."
+        "Reports eligible versioned predictions graded against completed closing sessions. "
+        "Legacy results are counted separately. Risk-bound distance is not forecast error, "
+        "and directional hit rate is not proof of investment performance."
     ),
 )
 async def get_predictions_performance():

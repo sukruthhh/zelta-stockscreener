@@ -1,0 +1,22 @@
+{
+  "base_revision": "34f5acaf2d57dcadf81ea71fa8188c6a120ed95c",
+  "python": "3.12.16",
+  "backend_tests": 142,
+  "data_source": "Yahoo Finance via yfinance 0.2.65, actual provider download followed by offline evaluation",
+  "snapshot_sha256": "f639a9ce0dda2105f95892f140f5dc40a7291590a78300d7e68e91df0c63aae5",
+  "replay_artifact_sha256": "e9e0fed7c3c23e9586a87c24a625e8e7977418eb9fae2745002f0debdcf228b9",
+  "source_sha256": {
+    "backend/evaluation_policy.py": "34391001000f645ed7deb724b8316fc3f1baae1213cefb596efa1651ed117306",
+    "backend/backtest_engine.py": "a322ac5b80e9ead0c2922573822d7654c8444a2156eb0deb91b75a9365a85c21",
+    "backend/assessment_evaluation.py": "3e19e388564540524b2e7ee195114c785dc884bc6c3cbff185f3d43f94ced963",
+    "backend/database.py": "9bf33ea3b3e3ae621f2aea6a8a9a8f588ac4bb680c0b27b90a55f3d66ebabfbd",
+    "backend/product_repository.py": "04c827b234cc2a6fc4fccd6907d8cac370db42d9b4de48f4b61fe85cd627201f",
+    "backend/scripts/evaluate_assessments.py": "fac435098835860f4cbf1125aaee3af5035cb76ac48cdb452b5c7ddf45d0a548",
+    "backend/migrations/006_versioned_evaluation.sql": "703dbdbefe75e70f02aae3fca5d9159e74a817fd02c336e6385c0ec8e589eae1",
+    "backend/tests/test_backtest_engine.py": "a870c4dd0925da03a02361b00985c4514ae4e691198a2eff221c1a35d812641f",
+    "backend/tests/test_grading_regressions.py": "2f7223b16d0cfcdba5bf45be05df5a222cca9875ecc41cfa1dea414a1685afef",
+    "backend/tests/test_assessment_evaluation.py": "1435170bcacd9ea723e4c9dff5413aac03e476bc91133356e21d1aa677c8c458",
+    "frontend/src/lib/api.ts": "49a7c819abd0e20a575e261fe0881fec850e2c9a89144186a9f4415d657aff1c",
+    "frontend/src/app/page.tsx": "509024658b3addee9f4d1fe918f479ea1ab04f0347eb2d3267bf8cb81d32d4e5"
+  }
+}

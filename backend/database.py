@@ -4,6 +4,7 @@ from psycopg2.extras import execute_values, RealDictCursor
 from datetime import date, datetime, timedelta
 
 from config import get_settings
+from evaluation_policy import EVALUATION_VERSION
 
 load_dotenv()
 
@@ -397,9 +398,14 @@ def fetch_due_predictions(as_of: date) -> list[dict]:
               AND target_eval_date <= %s
               AND predicted_price IS NOT NULL
               AND current_price IS NOT NULL
+              AND current_price > 0 AND predicted_price > 0
+              AND predicted_price <> current_price
+              AND model_version LIKE 'deterministic-%%'
+              AND result_status IN ('complete', 'news_unavailable')
+              AND evaluation_version = %s
             ORDER BY target_eval_date
             """,
-            (as_of,),
+            (as_of, EVALUATION_VERSION),
         )
         return [dict(row) for row in cursor.fetchall()]
     finally:
@@ -411,9 +417,11 @@ def record_backtest_result(
     prediction_id: int,
     *,
     actual_close_price: float,
+    actual_close_date: date,
+    evaluation_version: str,
     absolute_error_pct: float,
     is_correct_direction: bool,
-) -> None:
+) -> bool:
     db = _connect()
     cursor = db.cursor()
     try:
@@ -423,37 +431,41 @@ def record_backtest_result(
             SET actual_close_price = %s,
                 absolute_error_pct = %s,
                 is_correct_direction = %s,
+                actual_close_date = %s,
+                evaluation_version = %s,
                 is_evaluated = TRUE
-            WHERE id = %s
+            WHERE id = %s AND is_evaluated = FALSE AND evaluation_version = %s
             """,
-            (actual_close_price, absolute_error_pct, is_correct_direction, prediction_id),
+            (actual_close_price, absolute_error_pct, is_correct_direction, actual_close_date, evaluation_version, prediction_id, evaluation_version),
         )
         db.commit()
+        return cursor.rowcount == 1
     finally:
         cursor.close()
         db.close()
 
 
 def get_performance_summary() -> dict:
-    """Aggregate hit-rate and average error across every graded prediction.
-
-    This is the number that actually answers "does the model work" --
-    everything else in the pipeline is inputs and process; this is the
-    output that matters.
-    """
+    """Report eligible calls graded under the current policy; keep legacy grades separate."""
     db = _connect()
     cursor = db.cursor(cursor_factory=RealDictCursor)
     try:
         cursor.execute(
             """
             SELECT
-                COUNT(*) FILTER (WHERE is_evaluated) AS evaluated_count,
-                COUNT(*) FILTER (WHERE NOT is_evaluated) AS pending_count,
-                COUNT(*) FILTER (WHERE is_evaluated AND is_correct_direction) AS correct_count,
-                AVG(absolute_error_pct) FILTER (WHERE is_evaluated) AS avg_absolute_error_pct
+                COUNT(*) FILTER (WHERE is_evaluated AND evaluation_version = %s) AS evaluated_count,
+                COUNT(*) FILTER (WHERE NOT is_evaluated AND evaluation_version = %s) AS pending_count,
+                COUNT(*) FILTER (WHERE is_evaluated AND is_correct_direction AND evaluation_version = %s) AS correct_count,
+                AVG(absolute_error_pct) FILTER (WHERE is_evaluated AND evaluation_version = %s) AS avg_absolute_error_pct,
+                COUNT(*) FILTER (WHERE is_evaluated AND evaluation_version IS DISTINCT FROM %s) AS legacy_evaluated_count,
+                COUNT(*) FILTER (WHERE NOT is_evaluated AND evaluation_version IS DISTINCT FROM %s) AS legacy_pending_count
             FROM predictions
             WHERE target_eval_date IS NOT NULL
-            """
+              AND current_price > 0 AND predicted_price > 0 AND predicted_price <> current_price
+              AND model_version LIKE 'deterministic-%%'
+              AND result_status IN ('complete', 'news_unavailable')
+            """,
+            (EVALUATION_VERSION,) * 6,
         )
         row = dict(cursor.fetchone())
     finally:
@@ -471,4 +483,7 @@ def get_performance_summary() -> dict:
         "correct_count": correct,
         "hit_rate": round(correct / evaluated, 3) if evaluated else None,
         "avg_absolute_error_pct": round(avg_error, 2) if avg_error is not None else None,
+        "evaluation_version": EVALUATION_VERSION,
+        "legacy_evaluated_count": row["legacy_evaluated_count"],
+        "legacy_pending_count": row["legacy_pending_count"],
     }

@@ -1,5 +1,9 @@
 # Zelta delivery plan and evidence rules
 
+Backend progress does not depend on deployment. See [the grading/evaluation milestone](backend-evaluation.md)
+for 142 passing tests and a reproducible real-data comparison: 181 eligible calls, with the model
+matching always-up at 59.7%. Hosting remains a separate, unfinished workstream.
+
 ## Product outcome
 
 A family member can open Zelta on a laptop or phone, sign in, analyze a stock, understand the
@@ -19,7 +23,7 @@ alone do not establish value. Never describe simulated calls avoided as observed
 | 2 | Finish sign-in and personal watchlists | A real email link opens the deployed app; two separate accounts cannot see each other's data; add/reload/delete work on laptop and phone; expired sessions and backend outages show actionable errors. |
 | 3 | Complete the analysis experience | Valid, invalid, missing-history, stale-data, unavailable-news, and provider-failure paths are understandable. Refresh/navigation can resume the same job; polling and upstream calls have bounded deadlines; a restarted backend does not strand jobs indefinitely. |
 | 4 | Close public-release gaps | Disable/remove legacy experiment and diagnostic write endpoints or protect them appropriately; limit repeated expensive submissions; review service-worker origin/cache rules; support zoom and readable phone layouts. |
-| 5 | Correct prediction evaluation | Define five calendar days versus five trading sessions explicitly; use the eligible completed session's close; retain timestamps and evaluation version; quarantine incorrect historical grading; define Neutral/unchanged-price behavior and eligible data. |
+| 5 | Verify evaluation in live operation | Versioned five-calendar-day grading, dated closes, legacy separation and retrospective baseline comparisons are implemented. Remaining work includes live-provider validation of stored predictions, wider data coverage and point-in-time/corporate-action handling. |
 | 6 | Measure cache effectiveness and freshness | Fix New York/DST boundaries, verify expiration, count actual hits/misses/provider calls, record data and retrieval timestamps, and test errors/expiry. Distinguish controlled replays from live traffic and cache residence from feed age. |
 | 7 | Measure and reduce workflow friction | Record submission-to-result time, successful/failed/timed-out jobs, sign-in completion, and watchlist persistence. Fix the largest observed blocker, then repeat the same scenario set. Avoid storing emails or tokens in measurement logs. |
 | 8 | Produce evaluation and interview evidence | Compare identical eligible samples with explicit momentum, always-up, and seeded random baselines; report sample size, dates, directional coverage, uncertainty and failures. Finalize outcome-first SWE/PM bullets with linked evidence. |
