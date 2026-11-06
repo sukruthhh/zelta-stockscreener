@@ -2,7 +2,7 @@
 
 Algorithmic Sentiment & Liquidity Screener.
 
-## Verification checkpoint November 6 2026
+## Verification checkpoint - November 6th 2026
 
 See [the engineering and product reference](docs/engineering-product-reference.md) for verified
 capabilities, known release gaps, measurement evidence, and resume claims. A deployment recipe
