@@ -4,6 +4,7 @@ from uuid import uuid4
 import psycopg2
 import pytest
 
+import analysis_job_worker as worker
 from analysis_engine import DeterministicAnalysisEngine
 from analysis_job_worker import AnalysisJobDependencies, run_analysis_job
 from config import get_settings
@@ -129,3 +130,77 @@ def test_worker_marks_job_failed_when_price_fetch_raises(require_postgres):
         row = cursor.fetchone()
         assert row[0] == "failed"
         assert "unreachable" in row[1]
+
+
+@pytest.fixture
+def worker_writes(monkeypatch):
+    """Capture persistence while exercising real analysis and sentiment math."""
+    writes = {"states": [], "results": []}
+    monkeypatch.setattr(worker, "transition_analysis_job", lambda job_id, state, **kwargs: writes["states"].append(state.value))
+    monkeypatch.setattr(worker, "save_analysis_result", lambda **kwargs: writes["results"].append(kwargs["result"]))
+    return writes
+
+
+@pytest.mark.parametrize("failure_stage", [
+    "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+])
+def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+    records = _rising_price_records()
+    deps = _fake_deps(price_data=records, chunks=[
+        NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+    ])
+    expected = deps.analysis_engine.analyze("AAPL", records)
+
+    def unavailable(*args, **kwargs):
+        raise RuntimeError("internal provider detail must not reach the user")
+
+    if failure_stage == "score_news":
+        monkeypatch.setattr(worker, "score_news", unavailable)
+    elif failure_stage == "blend_sentiment":
+        monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+    else:
+        setattr(deps, failure_stage, unavailable)
+    if failure_stage == "harvest_news":
+        deps.has_fresh_news = lambda ticker: False
+        deps.fetch_news_chunks = lambda ticker: []
+
+    result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+
+    assert result is not None
+    assert result.assessment == expected.assessment
+    assert result.overall_score == expected.technical_score
+    assert result.macro_sentiment_score is None
+    assert result.sources == []
+    assert any("unavailable" in warning.lower() for warning in result.warnings)
+    assert "internal provider" not in " ".join(result.warnings)
+    assert worker_writes["states"] == ["gathering_data", "reading_news", "calculating_risk", "complete"]
+    assert worker_writes["results"] == [result]
+
+
+def test_missing_price_history_does_not_turn_news_into_a_directional_call(worker_writes):
+    deps = _fake_deps(price_data=_rising_price_records(days=10), chunks=[
+        NewsChunk(headline="good news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BULLISH),
+    ])
+    result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    assert result is not None
+    assert result.status == "insufficient_data"
+    assert result.assessment == "Neutral"
+    assert result.confidence == 0
+    assert result.macro_sentiment_score is None
+
+
+def test_worker_still_fails_when_required_price_fetch_fails(worker_writes):
+    result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=_fake_deps(fail_price_fetch=True))
+    assert result is None
+    assert worker_writes["states"] == ["gathering_data", "failed"]
+    assert worker_writes["results"] == []
+
+
+def test_worker_still_fails_when_result_cannot_be_saved(monkeypatch, worker_writes):
+    def unavailable(**kwargs):
+        raise RuntimeError("storage unavailable")
+
+    monkeypatch.setattr(worker, "save_analysis_result", unavailable)
+    result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=_fake_deps())
+    assert result is None
+    assert worker_writes["states"][-1] == "failed"

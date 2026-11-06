@@ -128,3 +128,9 @@ def test_blend_sentiment_keeps_stale_status_and_warning():
     # separate, still-true problem.
     assert blended.status == "market_data_delayed"
     assert any("10 days old" in warning for warning in blended.warnings)
+
+
+def test_news_cannot_override_an_insufficient_data_result():
+    engine = DeterministicAnalysisEngine()
+    incomplete = engine.analyze("AAPL", market_records([100.0] * 10))
+    assert engine.blend_sentiment(incomplete, sentiment_score=1.0, chunk_count=3, sources=[]) == incomplete

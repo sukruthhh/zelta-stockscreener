@@ -2,6 +2,25 @@
 
 Algorithmic Sentiment & Liquidity Screener.
 
+## Verification checkpoint November 6 2026
+
+See [the engineering and product reference](docs/engineering-product-reference.md) for verified
+capabilities, known release gaps, measurement evidence, and resume claims. A deployment recipe
+below is not proof of a running deployment. The historical agent design is superseded by the
+deterministic analysis path; news ingestion still uses OpenAI embeddings when configured.
+
+Run backend checks against a separate temporary database (no API keys required):
+
+```powershell
+docker compose -p zelta-validation -f compose.test.yml up --build --abort-on-container-exit --exit-code-from tests
+docker compose -p zelta-validation -f compose.test.yml down
+```
+
+The test database has no host port or persistent volume. Test providers and identity are fixtures;
+PostgreSQL migrations and HTTP persistence are real. GitHub Actions runs these checks too.
+Frontend checks: `npm ci`, `npm run lint`, and `npm run build -- --webpack` from `frontend/`.
+The webpack option avoids a reproduced local Windows Turbopack CSS-worker crash.
+
 ## What is implemented
 
 - FastAPI backend for live ticker checks, news harvesting, scan history, batch screening, and database verification.
@@ -19,10 +38,11 @@ Algorithmic Sentiment & Liquidity Screener.
 
 ## Current product status
 
-The core product loop works end to end: submit a ticker, a background job gathers price data and
+The core product loop is implemented: submit a ticker, a background job gathers price data and
 recent news, scores both deterministically, blends them into one assessment, and the frontend polls
-the job to a result. Predictions are graded automatically once they're 5 days old, and the running
-accuracy is visible in the app. The legacy three-agent (CrewAI) pipeline still exists but is isolated
+the job to a result. A separate backtest script can grade due predictions when run; a recurring
+scheduler and valid fixed-horizon evaluation remain to be verified. The app displays stored grading
+statistics, which do not establish predictive usefulness. The legacy three-agent (CrewAI) pipeline still exists but is isolated
 to `backend/agents.py` and `requirements-experiments.txt` -- it is not part of the normal request path.
 
 

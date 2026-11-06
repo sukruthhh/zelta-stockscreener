@@ -118,7 +118,7 @@ class DeterministicAnalysisEngine:
         pure-technical figure the engine computed; `overall_score` is what
         actually drives `assessment` once sentiment is folded in.
         """
-        if sentiment_score is None or chunk_count == 0:
+        if result.status in {"insufficient_data", "failed"} or sentiment_score is None or chunk_count == 0:
             return result
 
         overall_score = max(

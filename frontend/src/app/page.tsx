@@ -190,6 +190,7 @@ function PerformanceStrip() {
 function ResultCard({ job }: { job: AnalysisJob }) {
   const result = job.result;
   if (!result) return null;
+  const hasAssessment = result.status !== "insufficient_data" && result.status !== "failed";
   const color = ASSESSMENT_COLOR[result.assessment] ?? "#9ca3af";
 
   return (
@@ -200,16 +201,29 @@ function ResultCard({ job }: { job: AnalysisJob }) {
             {result.ticker}
           </p>
           <p className="text-2xl font-semibold" style={{ color }}>
-            {result.assessment}
+            {hasAssessment ? result.assessment : "Assessment unavailable"}
           </p>
         </div>
-        <div className="text-right">
-          <p className="text-xs text-[#6b7280]">confidence</p>
-          <p className="text-lg text-[#e2e4ea]">
-            {(result.confidence * 100).toFixed(0)}%
-          </p>
-        </div>
+        {hasAssessment && (
+          <div className="text-right">
+            <p className="text-xs text-[#6b7280]">Signal score</p>
+            <p className="text-lg text-[#e2e4ea]">
+              {(result.confidence * 100).toFixed(0)}%
+            </p>
+          </div>
+        )}
       </div>
+
+      {hasAssessment && (
+        <p className="text-xs text-[#9ca3af]">
+          Signal score is a computed indicator score, not a probability of being correct.
+        </p>
+      )}
+      <p className="text-xs text-[#9ca3af]">
+        {result.data_timestamp
+          ? `Market data as of ${new Date(result.data_timestamp).toLocaleDateString()}.`
+          : "Market data date is unavailable."}
+      </p>
 
       <div className="flex gap-6 text-sm">
         <div>
@@ -227,13 +241,15 @@ function ResultCard({ job }: { job: AnalysisJob }) {
       </div>
 
       {/* Technical vs. sentiment score bars */}
-      <div className="flex flex-col gap-2">
-        <ScoreBar label="Technical" score={result.technical_score} />
-        {result.macro_sentiment_score !== null && (
-          <ScoreBar label="News sentiment" score={result.macro_sentiment_score} />
-        )}
-        <ScoreBar label="Overall" score={result.overall_score} />
-      </div>
+      {hasAssessment && (
+        <div className="flex flex-col gap-2">
+          <ScoreBar label="Technical" score={result.technical_score} />
+          {result.macro_sentiment_score !== null && (
+            <ScoreBar label="News sentiment" score={result.macro_sentiment_score} />
+          )}
+          <ScoreBar label="Overall" score={result.overall_score} />
+        </div>
+      )}
 
       {result.risk_range && (
         <div className="text-sm text-[#c8ccd6]">

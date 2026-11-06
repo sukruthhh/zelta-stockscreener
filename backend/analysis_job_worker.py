@@ -87,38 +87,10 @@ def run_analysis_job(
         technical_result = dependencies.analysis_engine.analyze(ticker, price_data)
 
         transition_analysis_job(job_id, AnalysisJobStatus.READING_NEWS)
-        if not dependencies.has_fresh_news(ticker):
-            try:
-                dependencies.harvest_news(ticker)
-            except Exception:
-                # A Finnhub/embedding hiccup shouldn't fail the whole job --
-                # we fall back to a technical-only result, same as a ticker
-                # that genuinely has no recent coverage.
-                logger.warning(
-                    "News harvesting failed for %s; continuing technical-only.",
-                    ticker,
-                    exc_info=True,
-                )
-
+        final_result = technical_result
+        if technical_result.status not in {"insufficient_data", "failed"}:
+            final_result = _with_optional_news(ticker, technical_result, dependencies)
         transition_analysis_job(job_id, AnalysisJobStatus.CALCULATING_RISK)
-        chunks = dependencies.fetch_news_chunks(ticker)
-        anchors = dependencies.load_anchors()
-        sentiment = score_news(list(chunks), anchors)
-        sources = [
-            SourceEvidence(
-                title=item.chunk.headline,
-                url=item.chunk.url or "",
-                published_at=item.chunk.published_at,
-            )
-            for item in sentiment.top_chunks
-            if item.chunk.url
-        ]
-        final_result = dependencies.analysis_engine.blend_sentiment(
-            technical_result,
-            sentiment_score=sentiment.score,
-            chunk_count=sentiment.chunk_count,
-            sources=sources,
-        )
 
         save_analysis_result(
             user_id=user_id,
@@ -143,3 +115,40 @@ def run_analysis_job(
         except Exception:
             logger.exception("Could not record failure for job %s either", job_id)
         return None
+
+
+def _with_optional_news(
+    ticker: str,
+    technical_result: AnalysisResult,
+    dependencies: AnalysisJobDependencies,
+) -> AnalysisResult:
+    """Keep every optional news operation outside the required result path."""
+    warnings: list[str] = []
+    try:
+        if not dependencies.has_fresh_news(ticker):
+            try:
+                dependencies.harvest_news(ticker)
+            except Exception:
+                logger.warning("News refresh failed for %s; trying stored coverage.", ticker, exc_info=True)
+                warnings.append("News refresh is unavailable. Any news score uses previously stored coverage.")
+
+        chunks = dependencies.fetch_news_chunks(ticker)
+        sentiment = score_news(list(chunks), dependencies.load_anchors())
+        sources = [
+            SourceEvidence(title=item.chunk.headline, url=item.chunk.url, published_at=item.chunk.published_at)
+            for item in sentiment.top_chunks
+            if item.chunk.url
+        ]
+        result = dependencies.analysis_engine.blend_sentiment(
+            technical_result,
+            sentiment_score=sentiment.score,
+            chunk_count=sentiment.chunk_count,
+            sources=sources,
+        )
+        return result.model_copy(update={"warnings": [*result.warnings, *warnings]})
+    except Exception:
+        logger.warning("News sentiment failed for %s; using technical indicators only.", ticker, exc_info=True)
+        return technical_result.model_copy(update={"warnings": [
+            *technical_result.warnings,
+            "News sentiment is unavailable. This assessment uses technical indicators only.",
+        ]})

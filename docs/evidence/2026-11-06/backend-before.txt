@@ -1,0 +1,299 @@
+...........FFFFFFF...................................................... [ 98%]
+.                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_optional_news_failure_preserves_technical_result[has_fresh_news] _____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a254b5f0>
+worker_writes = {'results': [], 'states': ['gathering_data', 'reading_news', 'failed']}
+failure_stage = 'has_fresh_news'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+>       assert result is not None
+E       assert None is not None
+
+tests/test_analysis_job_worker.py:169: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    analysis_job_worker:analysis_job_worker.py:135 Analysis job b3d71e19-c141-44ba-a830-3a33225ba7f2 for AAPL failed
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 90, in run_analysis_job
+    if not dependencies.has_fresh_news(ticker):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+_____ test_optional_news_failure_preserves_technical_result[harvest_news] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a254a3f0>
+worker_writes = {'results': [AnalysisResult(ticker='AAPL', status='news_unavailable', assessment='Bullish', confidence=0.89, technical...endation to buy or sell any security.')], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'complete']}
+failure_stage = 'harvest_news'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+        assert result is not None
+        assert result.assessment == expected.assessment
+        assert result.overall_score == expected.technical_score
+        assert result.macro_sentiment_score is None
+        assert result.sources == []
+>       assert any("unavailable" in warning.lower() for warning in result.warnings)
+E       assert False
+E        +  where False = any(<generator object test_optional_news_failure_preserves_technical_result.<locals>.<genexpr> at 0x7283a25e1b10>)
+
+tests/test_analysis_job_worker.py:174: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  analysis_job_worker:analysis_job_worker.py:97 News harvesting failed for AAPL; continuing technical-only.
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 92, in run_analysis_job
+    dependencies.harvest_news(ticker)
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+___ test_optional_news_failure_preserves_technical_result[fetch_news_chunks] ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a254ac60>
+worker_writes = {'results': [], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'failed']}
+failure_stage = 'fetch_news_chunks'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+>       assert result is not None
+E       assert None is not None
+
+tests/test_analysis_job_worker.py:169: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    analysis_job_worker:analysis_job_worker.py:135 Analysis job e76e4ea5-1d46-402c-af0e-4bd792806bea for AAPL failed
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 104, in run_analysis_job
+    chunks = dependencies.fetch_news_chunks(ticker)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+_____ test_optional_news_failure_preserves_technical_result[load_anchors] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a2589190>
+worker_writes = {'results': [], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'failed']}
+failure_stage = 'load_anchors'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+>       assert result is not None
+E       assert None is not None
+
+tests/test_analysis_job_worker.py:169: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    analysis_job_worker:analysis_job_worker.py:135 Analysis job 4b1f27e8-b2c3-4eef-8373-ef5907ddb18a for AAPL failed
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 105, in run_analysis_job
+    anchors = dependencies.load_anchors()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+______ test_optional_news_failure_preserves_technical_result[score_news] _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a2588620>
+worker_writes = {'results': [], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'failed']}
+failure_stage = 'score_news'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+>       assert result is not None
+E       assert None is not None
+
+tests/test_analysis_job_worker.py:169: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    analysis_job_worker:analysis_job_worker.py:135 Analysis job eab4a2c5-426d-4cb9-a594-d0422dbd581b for AAPL failed
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 106, in run_analysis_job
+    sentiment = score_news(list(chunks), anchors)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+____ test_optional_news_failure_preserves_technical_result[blend_sentiment] ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7283a2588800>
+worker_writes = {'results': [], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'failed']}
+failure_stage = 'blend_sentiment'
+
+    @pytest.mark.parametrize("failure_stage", [
+        "has_fresh_news", "harvest_news", "fetch_news_chunks", "load_anchors", "score_news", "blend_sentiment",
+    ])
+    def test_optional_news_failure_preserves_technical_result(monkeypatch, worker_writes, failure_stage):
+        records = _rising_price_records()
+        deps = _fake_deps(price_data=records, chunks=[
+            NewsChunk(headline="bad news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BEARISH),
+        ])
+        expected = deps.analysis_engine.analyze("AAPL", records)
+    
+        def unavailable(*args, **kwargs):
+            raise RuntimeError("internal provider detail must not reach the user")
+    
+        if failure_stage == "score_news":
+            monkeypatch.setattr(worker, "score_news", unavailable)
+        elif failure_stage == "blend_sentiment":
+            monkeypatch.setattr(deps.analysis_engine, "blend_sentiment", unavailable)
+        else:
+            setattr(deps, failure_stage, unavailable)
+        if failure_stage == "harvest_news":
+            deps.has_fresh_news = lambda ticker: False
+            deps.fetch_news_chunks = lambda ticker: []
+    
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+    
+>       assert result is not None
+E       assert None is not None
+
+tests/test_analysis_job_worker.py:169: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    analysis_job_worker:analysis_job_worker.py:135 Analysis job 544a4ae9-7d4e-4e16-826f-9a94f995b441 for AAPL failed
+Traceback (most recent call last):
+  File "/app/analysis_job_worker.py", line 116, in run_analysis_job
+    final_result = dependencies.analysis_engine.blend_sentiment(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_analysis_job_worker.py", line 155, in unavailable
+    raise RuntimeError("internal provider detail must not reach the user")
+RuntimeError: internal provider detail must not reach the user
+____ test_missing_price_history_does_not_turn_news_into_a_directional_call _____
+
+worker_writes = {'results': [AnalysisResult(ticker='AAPL', status='insufficient_data', assessment='Bullish', confidence=0.0, technical...endation to buy or sell any security.')], 'states': ['gathering_data', 'reading_news', 'calculating_risk', 'complete']}
+
+    def test_missing_price_history_does_not_turn_news_into_a_directional_call(worker_writes):
+        deps = _fake_deps(price_data=_rising_price_records(days=10), chunks=[
+            NewsChunk(headline="good news", url="https://example.com/news", published_at=datetime.now(timezone.utc), embedding=BULLISH),
+        ])
+        result = run_analysis_job(uuid4(), "test-user", "AAPL", deps=deps)
+        assert result is not None
+        assert result.status == "insufficient_data"
+>       assert result.assessment == "Neutral"
+E       AssertionError: assert 'Bullish' == 'Neutral'
+E         
+E         - Neutral
+E         + Bullish
+
+tests/test_analysis_job_worker.py:187: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[has_fresh_news]
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[harvest_news]
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[fetch_news_chunks]
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[load_anchors]
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[score_news]
+FAILED tests/test_analysis_job_worker.py::test_optional_news_failure_preserves_technical_result[blend_sentiment]
+FAILED tests/test_analysis_job_worker.py::test_missing_price_history_does_not_turn_news_into_a_directional_call
+7 failed, 66 passed in 1.88s

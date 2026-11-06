@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-06",
+  "base_revision": "bcfdbaa3b8872ffbfd8d0a76517dc2bd7b67568a",
+  "branch": "codex/reliable-analysis",
+  "host": "Windows",
+  "node": "26.3.0",
+  "npm": "11.17.0",
+  "backend_python": "3.12.16",
+  "backend_image": "sha256:516ed404d8c54db9e40f1aff9ad3fe6769611c4b43076fb3e81d685ad6ea3fb4",
+  "database": "PostgreSQL 16.15 with pgvector; isolated tmpfs",
+  "providers": "fixture prices/news and identity; no live or paid API calls",
+  "source_sha256": {
+    "backend/analysis_engine.py": "0d19ce19958ca6bd1467c2b8dba67cdfb01a3ebaf624a8f00e4a77b7128e0867",
+    "backend/analysis_job_worker.py": "1a90d631b37443e1b22d3fe9b3edc621b22bffb7397115c1686ed62fd2ff5b47",
+    "backend/tests/test_analysis_engine.py": "0bcbb2e5af02025e509b2a197b8d8e71d381465fe968fcdef11e3bed6c82ed89",
+    "backend/tests/test_analysis_job_worker.py": "49f10a2f7a8ff2f004b2cfc62436b5c99bfbee431a4448c803c411a409dbabc8",
+    "backend/tests/test_product_workflow.py": "bf09818a4c8d598cc0b61973fdbbddb186c83bfeabf96878123031521dbe743a",
+    "backend/Dockerfile.test": "ef73521c162d69b6de511c5dc002263c6d97011bf57707bbdccf3a4b1e21152e",
+    "compose.test.yml": "9fa8890a79b97ea278860ea530973eedacb628b2d7cf7b7a9457e7c630534913",
+    "frontend/src/app/page.tsx": "7d455e096e03875dbe51fc89e2b081a16136ac053db338033a560c5d21313aac",
+    "frontend/eslint.config.mjs": "f7683bd86c8fff6f74ce928fd9a675afe1effe83783e6e02b84596ec5df20eee",
+    "frontend/package-lock.json": "c4cffe23be06326c8b3f57037c61dbfd4844df4e180e975276aa62e7c3a82bca",
+    ".github/workflows/checks.yml": "2b54c8cd95b657699273164e2a6244b206594051c7aeb22e3186d7fad9fae245"
+  }
+}
